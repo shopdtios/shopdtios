@@ -379,7 +379,7 @@
                     <a href="https://zalo.me/0827865031" target="_blank" class="link-item zl-btn"><i class="fa-solid fa-comment"></i> Zalo</a>
                 </div>
             </div>
-            <button class="btn-action" onclick="closeModal('annoModal')">ĐÃ HIỂU VÀ TIẾP TỤC</button>
+         <button class="btn-action" onclick="closeModal('annoModal')">ĐÃ HIỂU VÀ TIẾP TỤC</button>
         </div>
     </div>
 
@@ -462,50 +462,76 @@ function sendTele(text) {
 
 
 // KIỂM TRA HỆ THỐNG VÀ CẬP NHẬT THÔNG TIN
+
 function checkSystem() {
     const user = sessionStorage.getItem('logged');
-    if(user) {
-        curU = user;
-        document.getElementById('guest-zone').style.display = 'none';
-        document.getElementById('user-zone').style.display = 'flex';
-        document.getElementById('dashboard').style.display = 'flex';
-        document.getElementById('u-name').innerText = curU;
 
-        // CẬP NHẬT THÔNG TIN VÀO MODAL TÀI KHOẢN
-        document.getElementById('info-username').innerText = curU;
-        document.getElementById('info-fullname').innerText = localStorage.getItem('fullname_' + curU) || "Khách Hàng";
-        
-        // Cập nhật số dư tiền
+    if (user) {
+        curU = user;
+
+        const guest = document.getElementById('guest-zone');
+        if (guest) guest.style.display = 'none';
+
+        const userZone = document.getElementById('user-zone');
+        if (userZone) userZone.style.display = 'flex';
+
+        const dashboard = document.getElementById('dashboard');
+        if (dashboard) dashboard.style.display = 'flex';
+
+        const uname = document.getElementById('u-name');
+        if (uname) uname.innerText = curU;
+
+        const infoUser = document.getElementById('info-username');
+        if (infoUser) infoUser.innerText = curU;
+
+        const infoFull = document.getElementById('info-fullname');
+        if (infoFull) {
+            infoFull.innerText =
+                localStorage.getItem('fullname_' + curU) || "Khách Hàng";
+        }
+
         let balance = localStorage.getItem('money_' + curU) || 0;
-        document.getElementById('bal-val').innerText = parseInt(balance).toLocaleString() + 'đ'; // Dashboard ngoài
-        document.getElementById('info-balance').innerText = parseInt(balance).toLocaleString() + 'đ'; // Trong Modal
-        
-        // Hiện Email/SĐT nếu đã lưu trước đó
-        document.getElementById('display-email').innerText = localStorage.getItem('email_' + curU) || "Chưa có";
-        document.getElementById('display-phone').innerText = localStorage.getItem('contact_' + curU) || "Chưa có";
+        balance = parseInt(balance) || 0;
+
+        const bal = document.getElementById("bal-val");
+        if (bal) bal.innerText = balance.toLocaleString() + 'đ';
+
+        const infoBal = document.getElementById("info-balance");
+        if (infoBal) infoBal.innerText = balance.toLocaleString() + 'đ';
+
+        const email = document.getElementById('display-email');
+        if (email) {
+            email.innerText =
+                localStorage.getItem('email_' + curU) || "Chưa có";
+        }
+
+        const phone = document.getElementById('display-phone');
+        if (phone) {
+            phone.innerText =
+                localStorage.getItem('contact_' + curU) || "Chưa có";
+        }
 
         startIdleTimer();
     }
 }
 
-
         // TỰ ĐỘNG ĐĂNG XUẤT KHI TREO MÁY (15 phút)
         function startIdleTimer() {
-            const idleTime = 15 * 60 * 1000; // 15 phút
-            
-            function resetTimer() {
-                clearTimeout(idleTimer);
-                if(curU) idleTimer = setTimeout(logout, idleTime);
-            }
+    const idleTime = 15 * 60 * 1000; // 15 phút
 
-            // Theo dõi các hành động của khách
-            window.onload = resetTimer;
-            window.onmousemove = resetTimer;
-            window.onmousedown = resetTimer; 
-            window.ontouchstart = resetTimer; 
-            window.onclick = resetTimer;     
-            window.onkeypress = resetTimer;   
+    function resetTimer() {
+        clearTimeout(idleTimer);
+        if (curU) {
+            idleTimer = setTimeout(logout, idleTime);
         }
+    }
+
+    // reset khi có tương tác
+    window.onload = resetTimer;
+    document.onmousemove = resetTimer;
+    document.onkeydown = resetTimer;
+    document.onclick = resetTimer;
+}
 
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
@@ -807,23 +833,6 @@ function openForgotModal() {
     }
 }
 
-function verifyField(type) {
-    let label = (type === 'email') ? "Email" : "Số điện thoại";
-    let val = prompt("Nhập " + label + " của bạn:");
-    if (val) {
-        // Thông báo đúng yêu cầu của bạn
-        alert("Shopducthinhios.github.io gửi mã xác thực về " + label + " là: " + val);
-        
-        let code = prompt("NHẬP MÃ XÁC THỰC (6 SỐ):");
-        if (code === "123456") { // Mã mẫu
-            alert("✅ Xác Thực Thành Công!");
-            document.getElementById('info-' + type).innerHTML = val + " <i style='color:green'>(Đã xác thực)</i>";
-        } else {
-            alert("❌ Mã xác thực sai!");
-        }
-    }
-}
-
 // HÀM ĐỔI MẬT KHẨU
 function changePassword() {
     let oldP = prompt("Nhập mật khẩu hiện tại:");
@@ -884,13 +893,32 @@ function verifyField(type) {
 }
 
 function doneDep() {
-    alert("Đã báo Admin kiểm tra!");
-    document.getElementById('depositModal').style.display = 'none';
-    sendTele(`💰 <b>BÁO CHUYỂN TIỀN</b>\n👤 User: ${curU}`);
+    alert("Hệ thống đã ghi nhận! Vui lòng chờ Admin kiểm tra.");
+    
+    // Đóng bảng nạp tiền
+    document.getElementById('depositModal').style.display = 'none'; 
+    
+    // Ẩn vùng QR và xóa số tiền cũ
+    document.getElementById('qr-zone').style.display = 'none';
+    document.getElementById('dep-amt').value = '';
+
+    sendTele(`💰 <b> ĐÃ CHUYỂN TIỀN</b>\n👤 User: <code>${curU}</code>\n⚠️ Check Bank ngay!`);
 }
-);
 
 
+document.addEventListener("DOMContentLoaded", function () {
+    const btn = document.getElementById("btn-continue");
+    if (btn) {
+        btn.addEventListener("click", function () {
+            const modal = document.getElementById("announcement");
+            if (modal) modal.style.display = "none";
+        });
+    }
+});
+
+function closeNotice() {
+    document.getElementById('annoModal').style.display = 'none';
+}
     </script>
 
 <div id="cardModal" class="modal">
