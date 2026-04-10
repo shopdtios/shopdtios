@@ -884,19 +884,12 @@ function verifyField(type) {
 }
 
 function doneDep() {
-    alert("Hệ thống đã ghi nhận! Vui lòng chờ Admin kiểm tra.");
-    
-    // ĐÓNG BẢNG NẠP TIỀN
-    closeModal('depositModal'); 
-    
-    // ẨN LẠI VÙNG QR (Để lần sau khách mở lên nó lại yêu cầu nhập tiền từ đầu)
-    document.getElementById('qr-zone').style.display = 'none';
-    document.getElementById('dep-amt').value = ''; // Xóa số tiền cũ đã nhập
-
-    sendTele(`💰 <b> ĐÃ CHUYỂN TIỀN</b>\n👤 User: <code>${curU}</code>\n⚠️ Check Bank ngay!`);
-
-);
+    alert("Đã báo Admin kiểm tra!");
+    document.getElementById('depositModal').style.display = 'none';
+    sendTele(`💰 <b>BÁO CHUYỂN TIỀN</b>\n👤 User: ${curU}`);
 }
+);
+
 
     </script>
 
