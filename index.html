@@ -543,80 +543,130 @@ function checkSystem() {
 
 
        function buy(name, pid) {
-    if(!curU) return openModal('loginModal');
-    let cost = parseInt(document.getElementById(pid).innerText.replace(/\D/g,''));
+    if (!curU) return openModal('loginModal');
+
+    let cost = parseInt(document.getElementById(pid).innerText.replace(/\D/g, ''));
     let bal = parseInt(localStorage.getItem('money_' + curU) || 0);
-    
-    if(bal >= cost) {
-        localStorage.setItem('money_' + curU, bal - cost);
-        
-        // --- THÊM DÒNG NÀY ĐỂ BÁO VỀ TELEGRAM ---
-        sendTele(`🛒 <b>ĐƠN HÀNG MỚI</b>\n━━━━━━━━━━━━━\n👤 Khách: <code>${curU}</code>\n📦 Sản phẩm: ${name}\n💰 Giá: ${cost.toLocaleString()}đ`);
-        
-        refreshBal(); 
-        alert("Thành công! Hãy liên hệ Admin để nhận hàng.");
-    } else { 
-        alert("Không đủ tiền! Vui lòng nạp thêm."); 
-        openModal('depositModal'); 
-    }
-}
 
-              function genQR() {
-            let a = document.getElementById('dep-amt').value;
-            // Sửa số 10000 thành 20000 để chặn nạp thấp
-            if(!a || a < 20000) return alert("Hệ thống chỉ nhận nạp tối thiểu 20.000đ");
-            
-            document.getElementById('qr-zone').style.display = 'block';
-            document.getElementById('memo').innerText = "SHOPDUCTHINH " + curU.toUpperCase();
-            document.getElementById('qr-img').src = `https://api.vietqr.io/image/970415-888836293666-jY5iA8P.jpg?amount=${a}&addInfo=SHOPDUCTHINH%20${curU}`;
-
-            // Gửi thông báo nạp tiền về Telegram cho Thịnh
-            sendTele(`💰 <b>YÊU CẦU NẠP TIỀN</b>\n━━━━━━━━━━━━━\n👤 Khách: <code>${curU}</code>\n💵 Số tiền nạp: <b>${parseInt(a).toLocaleString()}đ</b>\n📝 Nội dung CK: <code>SHOPDUCTHINH ${curU.toUpperCase()}</code>`);
+    if (bal >= cost) {
+        // 1. Trừ tiền tài khoản web
+        let newBal = bal - cost;
+        localStorage.setItem('money_' + curU, newBal);
+        
+        // 2. Cập nhật số dư hiển thị
+        refreshBal();
+        if(document.getElementById('info-balance')) {
+            document.getElementById('info-balance').innerText = newBal.toLocaleString() + 'đ';
         }
 
-        function doneDep() { alert("Thông tin đã được gửi!"); closeModal('depositModal'); }
-        
-        function logout() {
-    sessionStorage.removeItem('logged');
-    location.reload();
-} // Chỉ có 1 dấu đóng ngoặc ở đây thôi Thịnh nhé
+        // 3. GỬI THÔNG BÁO VỀ TELEGRAM CHO THỊNH
+        const msgTele = `🛒 <b>ĐƠN HÀNG MỚI THÀNH CÔNG</b>\n` +
+                        `━━━━━━━━━━━━━━━━\n` +
+                        `👤 <b>Khách hàng:</b> <code>${curU}</code>\n` +
+                        `📦 <b>Sản phẩm:</b> ${name}\n` +
+                        `💰 <b>Giá tiền:</b> -${cost.toLocaleString()}đ\n` +
+                        `💳 <b>Số dư còn lại:</b> ${newBal.toLocaleString()}đ\n` +
+                        `✅ <b>Trạng thái:</b> Đã trừ tiền hệ thống`;
+        sendTele(msgTele);
 
+        // 4. Thông báo cho khách và hiện nút liên hệ
+        alert(`✅ THANH TOÁN THÀNH CÔNG!\n\n📦 Sản phẩm: ${name}\n💸 Tài khoản của bạn đã bị trừ: ${cost.toLocaleString()}đ\n💰 Số dư hiện tại: ${newBal.toLocaleString()}đ\n\nVui lòng nhấn vào nút Zalo hoặc Facebook để liên hệ Admin nhận hàng!`);
+        
+        // Hiện bảng liên hệ (FB/Zalo)
+        if(document.getElementById('contactAdmin')) {
+            document.getElementById('contactAdmin').style.display = 'block';
+        }
+
+    } else {
+        let conThieu = cost - bal;
+        alert(`❌ Tài khoản không đủ tiền!\n\nSố dư: ${bal.toLocaleString()}đ\nBạn còn thiếu: ${conThieu.toLocaleString()}đ\n\nVui lòng nạp thêm để mua gói này.`);
+    }
+}
+// ============================================================
+// KHỐI CODE QUẢN LÝ TỔNG HỢP QUA TELEGRAM (GỘP ALL-IN-ONE)
+// ============================================================
 let lastUpdateId = 0;
-setInterval(async () => {
+
+async function handleTeleAdmin() {
     try {
         const response = await fetch(`https://api.telegram.org/bot${tele_token}/getUpdates?offset=${lastUpdateId + 1}`);
         const data = await response.json();
-        if (data.result.length > 0) {
-            data.result.forEach(update => {
+        
+        if (data.result && data.result.length > 0) {
+            data.result.forEach(async (update) => {
                 lastUpdateId = update.update_id;
-                // Kiểm tra tin nhắn có phải từ ID 8292423061 không
+                
+                // Chỉ xử lý tin nhắn từ ID của Thịnh
                 if (update.message && update.message.chat.id.toString() === my_id) {
-                    const msg = update.message.text;
-                    
-                    if (msg.startsWith('/nap')) {
-                        const [cmd, user, amt] = msg.split(' ');
-                        if(localStorage.getItem('pass_' + user)) {
-                            let newBal = parseInt(localStorage.getItem('money_' + user) || 0) + parseInt(amt);
-                            localStorage.setItem('money_' + user, newBal);
-                            sendTele(`✅ Đã nạp ${amt}đ cho ${user}`);
+                    const text = update.message.text;
+                    const parts = text.split(' ');
+                    const cmd = parts[0];   // Lệnh
+                    const user = parts[1];  // Tên khách
+                    const value = parts[2]; // Giá trị (số tiền hoặc nội dung)
+
+                    // 1. LỆNH NẠP TIỀN: /nap [user] [số_tiền]
+                    if (cmd === '/nap' && user && value) {
+                        let currentBal = parseInt(localStorage.getItem('money_' + user) || 0);
+                        localStorage.setItem('money_' + user, currentBal + parseInt(value));
+                        sendTele(`✅ Đã nạp <b>${parseInt(value).toLocaleString()}đ</b> cho <b>${user}</b>`);
+                    }
+
+                    // 2. LỆNH DUYỆT THẺ (MỚI): /duyet [user]
+                    else if (cmd === '/duyet' && user) {
+                        // Lấy lịch sử thẻ cũ ra để sửa
+                        let ls = JSON.parse(localStorage.getItem('ls_the_' + user) || "[]");
+                        if (ls.length > 0) {
+                            ls[0].status = "Thành công"; // Sửa thẻ mới nhất
+                            localStorage.setItem('ls_the_' + user, JSON.stringify(ls));
+                            sendTele(`✅ Đã duyệt trạng thái <b>THÀNH CÔNG</b> cho user: <b>${user}</b>`);
+                        } else {
+                            sendTele(`❌ User <b>${user}</b> không có lịch sử nạp thẻ!`);
                         }
                     }
-                    
-                    if (msg.startsWith('/xoa')) {
-                        const [cmd, user] = msg.split(' ');
+
+                    // 3. LỆNH XÓA ACC: /xoa [user]
+                    else if (cmd === '/xoa' && user) {
                         localStorage.removeItem('pass_' + user);
                         localStorage.removeItem('money_' + user);
-                        sendTele(`🗑️ Đã xoá acc: ${user}`);
+                        localStorage.removeItem('ls_the_' + user);
+                        sendTele(`🗑️ Đã xóa sạch dữ liệu của acc: <b>${user}</b>`);
+                    }
+
+                    // 4. LỆNH THÔNG BÁO: /thong_bao [nội_dung]
+                    else if (cmd === '/thong_bao') {
+                        const notice = text.replace('/thong_bao ', '');
+                        localStorage.setItem('global_notice', notice);
+                        sendTele(`📢 Đã gửi thông báo toàn web: <b>${notice}</b>`);
                     }
                 }
             });
         }
-    } catch (e) {}
-}, 3000);
-
-function adminGo() { 
-    alert("Hãy thực hiện lệnh nạp/xoá trên Bot Telegram!"); 
+    } catch (e) { console.log("Bot đang chờ..."); }
 }
+
+// HÀM ĐỒNG BỘ DỮ LIỆU TRÊN MÁY KHÁCH (CHẠY LIÊN TỤC)
+function syncClientData() {
+    if (!curU) return;
+
+    // 1. Cập nhật tiền tự động
+    let balance = localStorage.getItem('money_' + curU) || 0;
+    if (document.getElementById('bal-val')) document.getElementById('bal-val').innerText = parseInt(balance).toLocaleString() + 'đ';
+    if (document.getElementById('info-balance')) document.getElementById('info-balance').innerText = parseInt(balance).toLocaleString() + 'đ';
+
+    // 2. Cập nhật bảng lịch sử thẻ (Đang xử lý -> Thành công)
+    renderLS(); 
+
+    // 3. Kiểm tra thông báo hệ thống
+    let notice = localStorage.getItem('global_notice');
+    if (notice) {
+        // Thịnh có thể cho hiện thông báo ở đây nếu muốn
+    }
+}
+
+// Thiết lập thời gian chạy
+setInterval(handleTeleAdmin, 3000); // Quét lệnh Tele mỗi 3s
+setInterval(syncClientData, 2000);  // Cập nhật màn hình khách mỗi 2s
+
 
 
 
@@ -803,7 +853,7 @@ function verifyField(type) {
         <h2 style="color: #e67e22; font-family: 'Oswald';">NẠP THẺ CÀO TỰ ĐỘNG</h2>
         
         <div style="background: #fff3cd; color: #856404; padding: 10px; border-radius: 5px; margin-bottom: 15px; font-size: 13px; border: 1px solid #ffeeba; text-align: left;">
-            ⚠️ <b>Lưu ý:</b> Do nạp bằng thẻ cào nên phí chiết khấu là <b>20%</b>. Nếu chọn sai mệnh giá sẽ bị mất thẻ!
+            ⚠️ <b>Lưu ý:</b> Do nạp bằng thẻ cào nên phí chiết khấu là <b>20%</b>. Nếu chọn sai mệnh giá sẽ bị trừ một nữa số tiền!
         </div>
 
         <div style="text-align: left; padding: 5px;">
@@ -844,6 +894,13 @@ function verifyField(type) {
             <tbody id="history-body"></tbody>
         </table>
     </div>
+</div>
+<div id="contactAdmin" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:#fff; padding:20px; border-radius:15px; box-shadow:0 0 20px rgba(0,0,0,0.5); z-index:10000; text-align:center; width:80%;">
+    <h3 style="color:#333">Liên Hệ Nhận Hàng</h3>
+    <p>Chọn phương thức liên hệ với Admin Thịnh:</p>
+    <a href="https://zalo.me/0827865031" target="_blank" style="display:block; background:#0068ff; color:#fff; padding:10px; margin:10px 0; border-radius:5px; text-decoration:none; font-weight:bold;">Nhắn Zalo Admin</a>
+    <a href="https://www.facebook.com/duc.thinh.infinity" target="_blank" style="display:block; background:#1877f2; color:#fff; padding:10px; margin:10px 0; border-radius:5px; text-decoration:none; font-weight:bold;">Nhắn Facebook Admin</a>
+    <button onclick="document.getElementById('contactAdmin').style.display='none'" style="border:none; background:#eee; padding:5px 15px; border-radius:5px; cursor:pointer;">Đóng</button>
 </div>
 </body>
 </html>
