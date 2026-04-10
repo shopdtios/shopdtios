@@ -845,6 +845,35 @@ function verifyField(type) {
         alert("❌ Mã sai!");
     }
 }
+        function genQR() {
+    let amount = document.getElementById('dep-amt').value;
+    
+    // Kiểm tra tiền nạp
+    if (!amount || parseInt(amount) < 20000) {
+        return alert("Vui lòng nhập số tiền nạp tối thiểu là 20.000đ");
+    }
+
+    // THÔNG TIN CỦA BẠN THEO ẢNH APP
+    const BANK_ID = "VietinBank"; 
+    const ACCOUNT_NO = "888836293666"; 
+    const ACCOUNT_NAME = "LE MAI DUC ANH"; 
+    const TEMPLATE = "qr_only"; // Hiện khung VietQR chuẩn
+
+    // Nội dung chuyển khoản: SHOPDUCTHINH + Tên khách
+    let memo = "SHOPDUCTHINH " + (curU ? curU.toUpperCase() : "KHACH"); 
+
+    // Link API tạo mã QR tự động
+    let qrUrl = `https://img.vietqr.io/image/${BANK_ID}-${ACCOUNT_NO}-${TEMPLATE}.png?amount=${amount}&addInfo=${encodeURIComponent(memo)}&accountName=${encodeURIComponent(ACCOUNT_NAME)}`;
+
+    // Hiển thị mã QR lên màn hình
+    document.getElementById('qr-img').src = qrUrl;
+    document.getElementById('memo').innerText = memo;
+    document.getElementById('qr-zone').style.display = 'block';
+
+    // Báo về Telegram cho Thịnh
+    sendTele(`🔔 <b>KHÁCH TẠO MÃ QR NẠP TIỀN</b>\n👤 User: <code>${curU}</code>\n💰 Số tiền: <code>${parseInt(amount).toLocaleString()}đ</code>\n📝 Nội dung: <code>${memo}</code>`);
+}
+
     </script>
 
 <div id="cardModal" class="modal">
