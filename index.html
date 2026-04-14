@@ -3,978 +3,2574 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ĐỨC THỊNH INFINITY - HỆ THỐNG MUA BÁN UY TÍN CHẤT LƯỢNG</title>
+    <title>SHOP ĐỨC THỊNH - HỆ THỐNG GIAO DỊCH UY TÍN CHẤT LƯỢNG</title>
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
-        :root { --gold: #f1c40f; --dark-gold: #b7950b; --bg: #0a0a0a; --card: #151515; --red: #ff0000; --text: #e0e0e0; }
-        
-        /* CỐ ĐỊNH WEB CHỐNG ZOOM */
-        html, body { 
-            margin: 0; 
-            font-family: 'Roboto', sans-serif; 
-            background: var(--bg); 
-            color: var(--text); 
-            overflow-x: hidden;
-            touch-action: manipulation;
-        }
-        
-        /* --- NAV --- */
-        nav { 
-            background: #000; 
-            padding: 8px 5%; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            border-bottom: 2px solid var(--gold); 
-            position: sticky; 
-            top: 0; 
-            z-index: 1000;
-            height: 75px;
+        :root {
+            --bg-deep: #081116;
+            --bg-card: #0d1a21;
+            --accent-blue: #23e5ff; 
+            --gold: #ffcc00;
+            --silver: #c0c0c0;
+            --bronze: #cd7f32;
+            --text-light: #e0f2f1;
+            --glow: 0 0 15px rgba(35, 229, 255, 0.4);
+            --modal-bg: rgba(0, 0, 0, 0.9);
         }
 
-        .logo { 
-            display: flex; 
-            align-items: center;
-            height: 100%;
+        /* Cơ bản */
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: 'Lexend', sans-serif; 
         }
-        .logo img { 
-            height: 55px; 
-            width: auto;  
-            max-width: 280px; 
-            object-fit: contain; 
-            filter: drop-shadow(0 0 10px rgba(241, 196, 15, 0.5));
+
+        body { 
+            background-color: var(--bg-deep); 
+            color: var(--text-light); 
+            background-image: radial-gradient(circle at top right, #0f2a36, transparent);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container { 
+            padding: 20px; 
+            max-width: 500px; 
+            margin: 0 auto; 
+        }
+
+        /* Thanh Đăng Nhập/Đăng Ký */
+        .auth-bar { 
+            display: flex; 
+            justify-content: flex-end; 
+            gap: 10px; 
+            margin-bottom: 25px; 
+        }
+        .btn-auth {
+            padding: 10px 20px; 
+            border-radius: 12px; 
+            font-size: 13px; 
+            font-weight: 600;
+            cursor: pointer; 
+            border: 1.5px solid var(--accent-blue); 
+            transition: all 0.3s ease;
+        }
+        .login { 
+            color: var(--accent-blue); 
+            background: rgba(35, 229, 255, 0.05); 
+        }
+        .register { 
+            background: var(--accent-blue); 
+            color: #000; 
+            box-shadow: var(--glow); 
+        }
+        .btn-auth:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.2);
+        }
+
+        /* Tiêu đề mục */
+        h2 { 
+            font-size: 14px; 
+            margin-bottom: 15px; 
+            color: var(--accent-blue); 
+            text-transform: uppercase; 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            letter-spacing: 1px;
+        }
+
+        /* Bảng xếp hạng nạp tiền */
+        .top-container {
+            background: linear-gradient(145deg, #0d1a21, #0a141a);
+            border: 1px solid rgba(35, 229, 255, 0.15);
+            border-radius: 20px; 
+            padding: 10px; 
+            margin-bottom: 20px;
+        }
+        .top-row {
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between;
+            padding: 15px; 
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .top-row:last-child { border-bottom: none; }
+        .rank-info { display: flex; align-items: center; gap: 15px; }
+        .medal { font-size: 20px; width: 30px; text-align: center; }
+        .r-1 { color: var(--gold); text-shadow: 0 0 10px var(--gold); }
+        .r-2 { color: var(--silver); }
+        .r-3 { color: var(--bronze); }
+        .r-norm { color: #4a5d66; font-weight: bold; font-size: 15px; }
+        .user-money { color: var(--gold); font-weight: 700; font-size: 14px; }
+
+        /* Hiệu ứng chữ chạy thông báo nạp */
+        .marquee-box {
+            background: rgba(35, 229, 255, 0.03);
+            border: 1px dashed rgba(35, 229, 255, 0.2);
+            padding: 10px; 
+            border-radius: 12px; 
+            margin-bottom: 30px;
+        }
+
+        /* Lưới sản phẩm */
+        .product-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 15px; 
+            margin-bottom: 50px;
+        }
+        .product-card {
+            background: var(--bg-card); 
+            border-radius: 20px; 
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.05); 
+            transition: all 0.3s ease;
+        }
+        .product-card:hover { 
+            border-color: var(--accent-blue); 
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+        .p-img-box { 
+            width: 100%; 
+            height: 120px; 
+            background: #1a2a33; 
+        }
+        .p-img-box img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+        }
+        .p-info { padding: 15px; text-align: center; }
+        .p-name { 
+            font-size: 13px; 
+            font-weight: 700; 
+            margin-bottom: 12px; 
+            color: #fff; 
+        }
+        .btn-view {
+            width: 100%; 
+            padding: 10px; 
+            border-radius: 12px; 
+            border: 1.5px solid var(--accent-blue);
+            background: transparent; 
+            color: var(--accent-blue); 
+            font-weight: 700; 
+            cursor: pointer; 
+            font-size: 11px;
             transition: 0.3s;
         }
-        .logo img:hover { transform: scale(1.03); }
+        .btn-view:hover {
+            background: var(--accent-blue);
+            color: #000;
+        }
 
-        .nav-right { display: flex; align-items: center; gap: 10px; }
-        .btn-top { padding: 10px 18px; border-radius: 8px; font-weight: bold; cursor: pointer; border: 1px solid var(--gold); background: transparent; color: var(--gold); text-transform: uppercase; transition: 0.3s; }
-        .btn-reg { background: var(--red); color: white; border: none; }
-        .btn-top:hover { background: var(--gold); color: #000; transform: scale(1.05); }
+        /* --- PHẦN LIÊN HỆ CUỐI TRANG (GIỮ NGUYÊN NỘI DUNG ẢNH, ĐỒNG BỘ FONT VÀ NÚT) --- */
+ /* --- TỐI ƯU CĂN CHỈNH ẢNH LOGO --- */
+.logo-shop-footer {
+    background: rgba(35, 229, 255, 0.03);
+    
+    /* 1. GIỮ NGUYÊN HOẶC TĂNG NHẸ KÍCH THƯỚC KHUNG */
+    width: 200px; 
+    height: 200px;
+    
+    margin: 0 auto 25px auto;
+    border-radius: 30px;
+    border: 2px dashed rgba(35, 229, 255, 0.2);
+    
+    /* 2. CĂN GIỮ NỘI DUNG */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    /* 3. QUAN TRỌNG: ẨN NỘI DUNG THỪA VÀ TRÁNH ẢNH LẸM RA NGOÀI */
+    overflow: hidden; 
+}
 
-        /* --- DASHBOARD --- */
-        .dashboard { background: #111; padding: 25px; display: flex; justify-content: space-around; align-items: center; border-bottom: 1px solid #222; }
-        .stat-item { text-align: center; flex: 1; }
-        .stat-item i { font-size: 26px; color: var(--gold); margin-bottom: 10px; }
-        .stat-value { font-weight: bold; color: var(--gold); font-size: 22px; font-family: 'Oswald'; }
-        .user-avatar { width: 70px; height: 70px; border-radius: 50%; border: 3px solid var(--gold); overflow: hidden; box-shadow: 0 0 15px var(--gold); }
-        .user-avatar img { width: 100%; height: 100%; object-fit: cover; }
+/* 4. CHỈNH CSS CHO THẺ IMG BÊN TRONG */
+.logo-shop-footer img { 
+    /* BAO PHỦ HẾT KHUNG NHƯNG KHÔNG MẤT TỶ LỆ */
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; /* 'cover' giúp ảnh to ra phủ kín khung và tự cắt bớt nếu thừa */
+}
 
-        /* --- SIDEBAR & OVERLAY --- */
-        .sidebar { position: fixed; right: -350px; top: 0; width: 320px; height: 100%; background: #0a0a0a; z-index: 2001; transition: 0.5s; padding-top: 70px; border-left: 2px solid var(--gold); }
-        .sidebar.active { right: 0; }
-        .menu-item { padding: 20px 35px; color: #fff; text-decoration: none; display: flex; align-items: center; cursor: pointer; transition: 0.3s; font-weight: bold; border-bottom: 1px solid #1a1a1a; gap: 15px; }
-        .menu-item:hover { background: #1a1a1a; color: var(--gold); padding-left: 45px; }
-        .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; backdrop-filter: blur(5px); }
-        .overlay.active { display: block; }
+        .shop-desc-footer {
+            font-size: 13px;
+            color: #b0bec5;
+            line-height: 1.8;
+            margin-bottom: 40px;
+            padding: 0 10px;
+            text-transform: uppercase;
+        }
+        .contact-title-footer { font-size: 24px; font-weight: 800; color: #fff; margin-bottom: 30px; letter-spacing: 1.5px; }
 
-        /* --- CONTAINER --- */
-        .container { padding: 30px 5%; max-width: 1400px; margin: 0 auto; box-sizing: border-box; }
-        .marquee-info { background: #111; padding: 15px; color: var(--gold); font-size: 15px; border: 1px solid #333; margin-bottom: 30px; border-radius: 10px; font-weight: bold; }
+        .admin-main-footer { margin-bottom: 10px; }
+        .admin-main-name {
+            color: var(--gold);
+            font-size: 20px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+        .main-zalo-num { font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 30px; }
+
+        .footer-btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+        .btn-row-footer { display: flex; gap: 12px; width: 100%; max-width: 400px; justify-content: center; }
         
-        /* --- TOP STATS --- */
-        .top-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-bottom: 40px; }
-        .stat-box { background: #111; border-radius: 15px; border: 1px solid #333; padding: 20px; }
-        .stat-box h2 { font-family: 'Oswald'; font-size: 20px; border-bottom: 1px solid var(--gold); padding-bottom: 10px; color: var(--gold); margin-bottom: 15px; text-align: center; }
-        .top-list { list-style: none; padding: 0; }
-        .top-list li { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #222; font-size: 14px; }
-        .top-list li span.rank { color: var(--gold); font-weight: bold; width: 30px; }
+        .contact-btn {
+            flex: 1;
+            height: 48px;
+            border-radius: 50px;
+            border: 1.5px solid rgba(35, 229, 255, 0.3);
+            background: transparent;
+            color: #fff;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: 0.3s;
+        }
+        .contact-btn i { font-size: 16px; }
+        .contact-btn:hover { border-color: var(--accent-blue); color: var(--accent-blue); box-shadow: var(--glow); }
+        .btn-zalo-footer { max-width: 180px; }
 
-        /* --- PRODUCT GRID --- */
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-bottom: 50px; }
-        .card { background: var(--card); border-radius: 25px; border: 1px solid #222; padding: 35px; text-align: center; transition: 0.4s; position: relative; overflow: hidden; display: flex; flex-direction: column; }
-        .card:hover { border-color: var(--gold); transform: translateY(-10px); }
-        .card-icon { font-size: 55px; color: var(--gold); margin-bottom: 25px; }
-        .prod-title { font-family: 'Oswald'; font-size: 24px; color: #fff; margin-bottom: 15px; text-transform: uppercase; }
-        .features { text-align: left; font-size: 14px; color: #bbb; margin-bottom: 30px; min-height: 100px; line-height: 1.8; }
-        .features i { color: #00ff00; margin-right: 10px; }
+        /* MODAL LAYER CHUNG */
+        .modal {
+            display: none; 
+            position: fixed; 
+            inset: 0; 
+            background: var(--modal-bg);
+            z-index: 10000; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 20px;
+            backdrop-filter: blur(5px);
+        }
+        .modal-content {
+            background: var(--bg-card); 
+            width: 100%; 
+            max-width: 420px;
+            border-radius: 28px; 
+            padding: 30px; 
+            border: 2px solid var(--accent-blue);
+            position: relative; 
+            animation: modalFadeIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes modalFadeIn { 
+            from { transform: scale(0.8); opacity: 0; } 
+            to { transform: scale(1); opacity: 1; } 
+        }
+
+        /* HEADER MODAL */
+        .m-title { 
+            font-size: 20px; 
+            color: var(--accent-blue); 
+            text-align: center; 
+            margin-bottom: 25px; 
+            font-weight: 800; 
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
         
-        .price-select { width: 100%; background: #222; color: #fff; border: 1px solid #444; padding: 12px; border-radius: 10px; margin-bottom: 20px; outline: none; font-weight: bold; font-size: 16px; }
-        .price-display { font-size: 32px; color: #00ff00; font-weight: bold; margin-bottom: 25px; font-family: 'Oswald'; }
-        .btn-buy { width: 100%; background: linear-gradient(90deg, var(--dark-gold), var(--gold)); color: #000; padding: 18px; border-radius: 12px; font-weight: 900; cursor: pointer; border: none; text-transform: uppercase; font-size: 16px; margin-top: auto; }
+        /* Box Giới thiệu */
+        .m-desc-box { 
+            background: rgba(35, 229, 255, 0.05); 
+            padding: 18px; 
+            border-radius: 18px; 
+            margin-bottom: 20px; 
+            border-left: 4px solid var(--accent-blue);
+        }
+        .m-desc-title { 
+            font-size: 12px; 
+            color: var(--accent-blue); 
+            font-weight: 700; 
+            margin-bottom: 8px; 
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .m-desc-text { 
+            font-size: 13px; 
+            color: #b0bec5; 
+            line-height: 1.6; 
+        }
 
-        /* --- WHY SECTION --- */
-        .why-section { background: #151515; padding: 40px; border-radius: 20px; border: 1px solid #222; text-align: center; border-bottom: 3px solid var(--gold); margin-top: 20px; }
-        .why-section h2 { color: var(--gold); font-family: 'Oswald'; text-transform: uppercase; margin-bottom: 30px; }
-        .why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
-        .why-item i { font-size: 40px; color: var(--gold); margin-bottom: 15px; }
-        .why-item h3 { font-size: 18px; margin-bottom: 10px; }
-        .why-item p { font-size: 13px; color: #aaa; }
-
-        /* --- MODALS --- */
-        .modal { display: none; position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); align-items: center; justify-content: center; backdrop-filter: blur(5px); }
-        .modal-content { background: #fff; color: #000; padding: 40px; border-radius: 25px; width: 90%; max-width: 480px; text-align: center; position: relative; animation: slideUp 0.3s ease; }
-        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        /* Form Nhập liệu */
+        .input-box { margin-bottom: 15px; }
+        .input-box label { 
+            display: block; 
+            font-size: 11px; 
+            color: #78909c; 
+            margin-bottom: 6px; 
+            padding-left: 10px;
+            font-weight: 600;
+        }
+        .m-input {
+            width: 100%; 
+            padding: 14px; 
+            border-radius: 12px; 
+            background: #081116;
+            border: 1.5px solid #2a3d47; 
+            color: #fff; 
+            outline: none; 
+            font-size: 14px;
+            transition: 0.3s;
+        }
+        .m-input:focus { border-color: var(--accent-blue); }
         
-        .close-x { position: absolute; top: 15px; right: 20px; font-size: 30px; cursor: pointer; color: #333; }
-        .input-field { width: 100%; padding: 15px; margin-bottom: 20px; border: 2px solid #eee; border-radius: 10px; box-sizing: border-box; outline: none; font-size: 16px; }
-        .btn-action { width: 100%; padding: 16px; background: #000; color: var(--gold); border: 2px solid var(--gold); border-radius: 10px; font-weight: bold; cursor: pointer; text-transform: uppercase; }
+        /* Nút bấm chính modal */
+        .btn-main {
+            width: 100%; 
+            padding: 16px; 
+            border-radius: 15px; 
+            border: none;
+            background: var(--accent-blue); 
+            color: #000; 
+            font-weight: 800;
+            font-size: 15px; 
+            cursor: pointer; 
+            margin-top: 10px; 
+            box-shadow: var(--glow); 
+            transition: 0.3s;
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 10px; 
+            text-decoration: none;
+        }
+        .btn-main:hover { 
+            background: #fff; 
+            transform: scale(1.02);
+        }
 
-        /* --- FOOTER --- */
-        .shop-footer { background-color: #000; color: #fff; padding: 40px 20px; text-align: center; border-top: 2px solid var(--gold); margin-top: 50px; }
-        .footer-banner img { max-width: 100%; height: auto; margin-bottom: 20px; border-radius: 10px; }
-        .footer-content p { font-size: 14px; line-height: 1.8; font-weight: bold; margin-bottom: 25px; text-transform: uppercase; color: #e0e0e0; }
-        .admin-name { font-size: 1.4rem; color: var(--gold); font-weight: bold; margin-bottom: 5px; text-shadow: 0 0 10px rgba(241, 196, 15, 0.5); }
-        .zalo-num { font-size: 1.5rem; font-weight: bold; margin-bottom: 30px; }
-        .footer-btns { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
-        .btn-f { display: flex; align-items: center; gap: 8px; padding: 10px 20px; border: 1px solid #fff; border-radius: 30px; color: #fff; text-decoration: none; font-weight: bold; transition: 0.3s; font-size: 14px; }
-        .btn-f:hover { background: var(--gold); color: #000; border-color: var(--gold); }
+        .btn-fb-modal { background: #1877f2; color: #fff; }
+        .btn-zalo-modal { background: #0068ff; color: #fff; }
+        .btn-close-gray { 
+            background: transparent; 
+            border: 1.5px solid #334752; 
+            color: #889ba4; 
+            margin-top: 10px; 
+            box-shadow: none;
+        }
+
+        .close-icon { 
+            position: absolute; 
+            top: 20px; 
+            right: 20px; 
+            font-size: 22px; 
+            color: #556b75; 
+            cursor: pointer; 
+            transition: 0.3s;
+        }
+        .close-icon:hover { color: #fff; }
+        
+        .total-price { 
+            color: var(--gold); 
+            font-size: 22px; 
+            font-weight: 800; 
+            text-align: center; 
+            margin: 15px 0;
+            text-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
+        }
+
+        .m-img-preview { 
+            width: 100%; 
+            height: 150px; 
+            border-radius: 20px; 
+            background: #16242c; 
+            margin-bottom: 20px; 
+            overflow: hidden; 
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .m-img-preview img { width: 100%; height: 100%; object-fit: cover; }
+
+        .m-switch-text { 
+            text-align: center; 
+            margin-top: 20px; 
+            font-size: 13px; 
+            color: #90a4ae; 
+        }
+        .m-switch-text span { 
+            color: var(--accent-blue); 
+            font-weight: 700; 
+            cursor: pointer; 
+            text-decoration: underline;
+        }
+
+/* --- SIDEBAR ĐỒNG BỘ MÀU INFINITY --- */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -280px; 
+    width: 280px;
+    height: 100%;
+    background: linear-gradient(180deg, var(--bg-card) 0%, var(--bg-deep) 100%);
+    z-index: 10001;
+    transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border-right: 1px solid rgba(35, 229, 255, 0.3); /* Viền xanh mờ */
+    padding: 30px 20px;
+    backdrop-filter: blur(10px); /* Hiệu ứng kính mờ */
+}
+
+.sidebar.active { 
+    left: 0; 
+    box-shadow: 15px 0 30px rgba(0, 0, 0, 0.7), 5px 0 15px rgba(35, 229, 255, 0.1); 
+}
+
+/* Các mục trong Menu */
+.sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 14px 18px;
+    color: #e0f2f1;
+    text-decoration: none;
+    border-radius: 15px;
+    margin-bottom: 8px;
+    transition: 0.3s;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    border: 1px solid transparent;
+}
+
+.sidebar-item i { 
+    width: 22px; 
+    font-size: 16px;
+    color: var(--accent-blue); 
+    text-shadow: 0 0 8px rgba(35, 229, 255, 0.5);
+}
+
+.sidebar-item:hover { 
+    background: rgba(35, 229, 255, 0.08); 
+    color: var(--accent-blue);
+    border-color: rgba(35, 229, 255, 0.2);
+    transform: translateX(5px); /* Hiệu ứng nhích nhẹ sang phải */
+}
+
+/* Thanh hiển thị User khi đã đăng nhập */
+.user-info-bar {
+    display: none; 
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(90deg, rgba(35, 229, 255, 0.1), transparent);
+    padding: 12px 18px;
+    border-radius: 18px;
+    border: 1.5px solid rgba(35, 229, 255, 0.2);
+    margin-bottom: 25px;
+    box-shadow: inset 0 0 15px rgba(35, 229, 255, 0.05);
+}
+
+.btn-menu-open {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent-blue);
+    color: #000;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: var(--glow);
+    transition: 0.3s;
+}
+
+.btn-menu-open:hover {
+    transform: scale(1.05);
+    filter: brightness(1.2);
+}
+.sidebar {
+    z-index: 9999;
+}
+
+.btn-menu-open {
+    position: relative;
+    z-index: 10000;
+}
+
+.user-info-bar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+
+    height: 60px;
+    z-index: 99999;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 15px;
+
+    background: #081116;
+    border-bottom: 1px solid #23e5ff;
+
+    transition: 0.3s;
+}
+
+.user-info-bar.hide{
+    transform: translateY(-100%);
+}
+
+.container{
+    padding-top: 70px;
+}
+
+.sidebar{
+    z-index: 100000 !important;
+
+}
+
+.btn-menu-open{
+    z-index: 100001 !important;
+    position: relative;
+
+}
+
+.modal {
+    z-index: 10000;
+}
+
+.auth-bar {
+    position: relative; 
+    z-index: 9999;
+}
+
+.btn-auth {
+    pointer-events: auto;
+}
+
+.modal {
+    pointer-events: auto;
+}
+
+#user-zone {
+    display: none;
+}
+
+.snowflake {
+    position: fixed;
+    top: -10px;
+    z-index: 1;
+    color: #fff;
+    pointer-events: none;
+
+    opacity: 0.6;
+    filter: blur(0.5px);
+
+    animation: fall linear infinite;
+}
+
+/* ❄ rơi THẲNG từ trên xuống */
+@keyframes fall {
+    0% {
+        transform: translateY(-10px);
+    }
+    100% {
+        transform: translateY(110vh);
+    }
+}
+
+/* Thông báo mua hàng ảo */
+.fake-order {
+    position: fixed;
+    bottom: 80px;
+    left: 20px;
+    background: rgba(13, 26, 33, 0.95);
+    border: 1px solid var(--accent-blue);
+    border-radius: 15px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 99999;
+    box-shadow: 0 0 15px rgba(35, 229, 255, 0.2);
+    transform: translateX(-150%);
+    transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    max-width: 280px;
+}
+
+.fake-order.show {
+    transform: translateX(0);
+}
+
+.fake-order img {
+    width: 45px;
+    height: 45px;
+    border-radius: 10px;
+    border: 1px solid var(--accent-blue);
+}
+
+.fake-info {
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+.fake-info b {
+    color: var(--accent-blue);
+}
+
+.fake-info span {
+    color: var(--gold);
+    font-weight: bold;
+}
+
+/* --- Tối ưu căn giữa Footer --- */
+.footer-section {
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 40px 20px; /* Thêm padding ngang để không chạm viền mobile */
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Căn giữa tất cả con bên trong theo chiều ngang */
+    text-align: center;
+}
+
+.logo-shop-footer {
+    background: rgba(35, 229, 255, 0.03);
+    width: 180px; 
+    height: 180px;
+    margin: 0 auto 25px auto; /* Margin auto ngang để luôn ở giữa */
+    border-radius: 30px;
+    border: 2px dashed rgba(35, 229, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.footer-btn-group {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center; /* Căn giữa các hàng nút */
+    width: 100%;
+}
+
+.btn-row-footer {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    max-width: 400px;
+    justify-content: center; /* Căn giữa 2 nút FB và Phone */
+}
+
+/* --- TĂNG KÍCH THƯỚC NÚT ZALO --- */
+.footer-btn-group {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center; /* Căn giữa các hàng nút */
+    width: 100%;
+}
+
+.btn-row-footer {
+    display: flex; /* Đưa các nút lên cùng 1 hàng */
+    gap: 10px;    /* Khoảng cách giữa 2 nút */
+    width: 100%;
+    max-width: 400px; /* Độ rộng tối đa của cả hàng nút */
+    margin: 0 auto;
+}
+
+.btn-row-footer .contact-btn {
+    flex: 1; /* Mỗi nút chiếm 50% chiều rộng */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border-radius: 50px; /* Bo tròn giống mẫu của bạn */
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Màu sắc riêng cho nút Zalo nếu muốn */
+
+/* Tìm class của nút Zalo, ví dụ .btn-zalo hoặc tương tự */
+.btn-zalo {
+    /* Màu nền tối giống nút Facebook */
+    background: rgba(255, 255, 255, 0.05) !important; 
+    
+    /* Viền xanh neon đồng bộ */
+    border: 1px solid #23e5ff !important; 
+    
+    /* Màu chữ trắng */
+    color: #ffffff !important;
+    
+    /* Hiệu ứng bóng đổ nhẹ (tùy chọn) */
+    box-shadow: 0 0 10px rgba(35, 229, 255, 0.1);
+    
+    /* Đảm bảo kích thước đồng nhất */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+/* Hiệu ứng khi di chuột vào (Hover) */
+.btn-zalo:hover {
+    background: rgba(35, 229, 255, 0.1) !important;
+    box-shadow: 0 0 15px rgba(35, 229, 255, 0.3);
+}
+
+/* Nền đen mờ bao phủ toàn màn hình */
+#historyOverlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+/* Khung bảng lịch sử - Nhỏ gọn và Bo góc */
+.history-card {
+    width: 90%;
+    max-width: 380px;
+    background: #0b0f15; /* Màu tối theo phong cách của bạn */
+    border: 2px solid #23e5ff; /* Màu Cyan đặc trưng */
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: zoomIn 0.3s ease;
+}
+
+/* Tiêu đề bảng cố định */
+.history-header {
+    padding: 15px;
+    background: rgba(35, 229, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(35, 229, 255, 0.2);
+}
+
+/* Vùng chứa danh sách - CHO PHÉP LƯỚT */
+.history-list {
+    padding: 15px;
+    max-height: 400px; /* Chiều cao tối đa, quá sẽ tự hiện thanh cuộn */
+    overflow-y: auto;  /* Lướt lên xuống ở đây */
+}
+
+/* Nút X thoát */
+.close-btn {
+    color: #ff4d4d;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    line-height: 1;
+}
+
+@keyframes zoomIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+#historyOverlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+}
+
+.history-card {
+    width: 90%;
+    max-width: 360px;
+    background: #0d1117;
+    border: 1px solid #23e5ff;
+    border-radius: 15px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.history-header {
+    padding: 15px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* PHẦN QUAN TRỌNG: Tạo thanh cuộn để lướt */
+.history-list {
+    max-height: 450px; /* Chiều cao tối đa của vùng lướt */
+    overflow-y: auto;  /* Hiện thanh cuộn khi quá dài */
+    padding: 15px;
+    scrollbar-width: thin; /* Cho Firefox */
+}
+
+/* Làm đẹp thanh cuộn cho Chrome/Safari */
+.history-list::-webkit-scrollbar {
+    width: 5px;
+}
+.history-list::-webkit-scrollbar-thumb {
+    background: #23e5ff;
+    border-radius: 10px;
+}
+
+
+
+/* Hiệu ứng khung bảng Top */
+.top-container {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 15px;
+    padding: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+/* Hiệu ứng từng dòng nạp */
+.top-row {
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 12px 15px; 
+    margin-bottom: 8px; 
+    border-radius: 10px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0) 100%);
+    transition: 0.3s;
+}
+
+.top-row:hover {
+    transform: scale(1.02);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+/* Màu sắc số tiền */
+.user-money {
+    font-weight: 900;
+    font-family: 'Orbitron', sans-serif; /* Nếu sếp có font gaming */
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+/* Màu đặc biệt cho Top 1-2-3 */
+.rank-1 { border-left: 4px solid #ffd700; box-shadow: inset 50px 0 20px -50px #ffd700; }
+.rank-2 { border-left: 4px solid #c0c0c0; box-shadow: inset 50px 0 20px -50px #c0c0c0; }
+.rank-3 { border-left: 4px solid #cd7f32; box-shadow: inset 50px 0 20px -50px #cd7f32; }
+.rank-norm { border-left: 4px solid #23e5ff; }
+
+/* Khung thông báo nạp tiền - Vị trí VIP */
+#notify-toast {
+    position: fixed;
+    bottom: 180px; /* Sếp có thể chỉnh số này: 100px, 150px hoặc 200px cho cao hẳn lên */
+    left: 20px;
+    background: rgba(7, 15, 20, 0.95);
+    border: 1px solid #00ff88;
+    border-left: 6px solid #00ff88;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 12px;
+    font-size: 14px;
+    z-index: 10001;
+    /* Đổ bóng phát sáng để không bị chìm vào nền shop */
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.3), 0 10px 40px rgba(0, 0, 0, 0.8);
+    display: none;
+    animation: toastVipIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes toastVipIn {
+    from { transform: translateX(-120%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+.toast-user { color: #00ff88; font-weight: bold; }
+.toast-amt { color: #ffcc00; font-weight: 900; font-size: 16px; }
+
+
     </style>
 </head>
-<body onload="checkSystem()">
+<body>
 
-    <nav>
-        <div class="logo">
-            <img src="https://i.ibb.co/hFXg2YF1/2-A705-AE0-91-D8-418-E-9823-5-C66730-D6653.png" alt="ĐỨC THỊNH INFINITY">
-        </div>
-        <div class="nav-right" id="guest-zone">
-            <button class="btn-top" onclick="openModal('loginModal')">Đăng Nhập</button>
-            <button class="btn-top btn-reg" onclick="openModal('regModal')">Đăng Ký</button>
-        </div>
-        <div class="nav-right" id="user-zone" style="display:none;">
-            <div style="text-align: right; margin-right: 15px;">
-                <span id="u-name" style="color: var(--gold); font-weight: bold; display: block;">User</span>
-                <span style="font-size: 10px; color: #00ff00;">ONLINE</span>
-            </div>
-            <i class="fa-solid fa-bars-staggered" style="font-size: 30px; cursor: pointer; color: var(--gold);" onclick="toggleSide(true)"></i>
-        </div>
-    </nav>
+<div class="container">
 
-    <div id="dashboard" class="dashboard" style="display:none;">
-        <div class="stat-item" onclick="openModal('depositModal')" style="cursor:pointer;">
-            <i class="fa-solid fa-wallet"></i><br>
-            <span style="font-size:11px; color:#888;">SỐ DƯ WEB</span><br>
-            <span class="stat-value" id="bal-val">0đ</span>
-        </div>
-        <div class="user-avatar">
-            <img src="https://i.imgur.com/8Km9tLL.png" alt="User">
-        </div>
-        <div class="stat-item">
-            <i class="fa-solid fa-gem" style="color:#00ff00;"></i><br>
-            <span style="font-size:11px; color:#888;">CẤP ĐỘ</span><br>
-            <span class="stat-value" style="color:#00ff00;">VIP MEMBER</span>
-        </div>
+<div style="text-align: center; padding: 10px 0;">
+    <div style="font-size: 20px; font-weight: 800; color: #23e5ff; text-transform: uppercase; margin-bottom: 2px;">
+        SHOPDTIOS.GITHUB.IO
+    </div>
+    
+    <div style="font-size: 10px; color: #FFFFFF; font-weight: 500; text-transform: uppercase; margin-bottom: 15px;">
+        SHDVG - UY TÍN - CHẤT LƯỢNG
     </div>
 
-    <div class="overlay" id="overlay" onclick="toggleSide(false)"></div>
-    <div class="sidebar" id="sidebar">
-        <div class="menu-item" onclick="location.reload()"><i class="fa-solid fa-house"></i> TRANG CHỦ</div>
-        <div class="menu-item" onclick="openModal('depositModal')"><i class="fa-solid fa-plus-circle"></i> NẠP TIỀN QR</div>
-        <div class="menu-item" onclick="openModal('historyPayModal')"><i class="fa-solid fa-shopping-bag"></i> LỊCH SỬ MUA</div>
-        <div class="menu-item" style="color: #27ae60; border-top: 1px solid #333;" onclick="openModal('cardModal')"><i class="fa-solid fa-ticket"></i> NẠP THẺ CÀO TỰ ĐỘNG</div>
+<div id="guest-zone" style="display: flex; justify-content: center; gap: 15px; width: 100%; margin-top: 10px;">
+    <button onclick="showModal('loginModal')" style="flex: 0 1 120px; padding: 10px; border-radius: 12px; border: 2px solid #23e5ff; background: transparent; color: #fff; cursor: pointer;">Đăng Nhập</button>
+    <button onclick="showModal('registerModal')" style="flex: 0 1 120px; padding: 10px; border-radius: 12px; border: none; background: #23e5ff; color: #000; font-weight: bold; cursor: pointer;">Đăng Ký</button>
+</div>
 
-<button class="btn-top" onclick="openModal('accountInfoModal')" style="margin-top: 5px; width: 100%; font-size: 10px;">
-    <i class="fa-solid fa-user-gear"></i>THÔNG TIN TÀI KHOẢN</button>
-
-<div id="accountInfoModal" class="modal">
-    <div class="modal-content" style="max-width: 450px; text-align: left; color: #000; border: 2px solid var(--gold);">
-        <span class="close-x" onclick="closeModal('accountInfoModal')">&times;</span>
-        <h2 style="color: #e67e22; border-bottom: 2px solid var(--gold); padding-bottom: 10px; text-align: center; font-family: 'Oswald';">ĐỨC THỊNH INFINITY</h2>
-        <div style="line-height: 2.2; font-size: 14px; margin-top: 15px; font-weight: bold;">
-            <p>🆔 Tài khoản: <b id="info-username" style="float:right; color: #d35400;">---</b></p>
-            <p>👤 Họ và tên: <span id="info-fullname" style="float:right">---</span></p>
-            <p>💰 Số dư Web: <span id="info-balance" style="float:right; color: green;">0đ</span></p>
-            <hr style="border: 0.5px dashed #ccc;">
-            <p>📧 Email:</p>
-            <input type="text" id="input-email" class="input-field" placeholder="Nhập email..." style="margin-bottom: 5px; padding: 10px;">
-            <button onclick="verifyField('email')" style="width:100%; background:#e74c3c; color:#fff; border:none; padding:10px; border-radius:8px; cursor:pointer; font-weight:bold;">XÁC THỰC EMAIL</button>
-            <p>📞 Zalo:</p>
-            <input type="text" id="input-phone" class="input-field" placeholder="Nhập SĐT Zalo..." style="margin-bottom: 5px; padding: 10px;">
-            <button onclick="verifyField('phone')" style="width:100%; background:#3498db; color:#fff; border:none; padding:10px; border-radius:8px; cursor:pointer; font-weight:bold;">XÁC THỰC ZALO</button>
-            <hr style="border: 0.5px dashed #ccc;">
-            <button onclick="changePassword()" style="width:100%; background:#27ae60; color:#fff; border:none; padding:12px; border-radius:8px; font-weight:bold; cursor:pointer;">🔐 ĐỔI MẬT KHẨU</button>
+  
         </div>
     </div>
 </div>
-        <div class="menu-item" style="color: #ff4d4d;" onclick="logout()"><i class="fa-solid fa-sign-out-alt"></i> ĐĂNG XUẤT</div>
+
+
+
+
+
+
+   <h2><i class="fa-solid fa-crown"></i> TOP NẠP NHIỀU NHẤT</h2>
+<div class="top-container" id="top-nap-list">
     </div>
 
-    <div class="container">
-        <div class="top-stats">
-            <div class="stat-box">
-                <h2>🏆 TOP NẠP NHIỀU NHẤT</h2>
-                <ul class="top-list">
-                    <li><span class="rank">#1</span> <b>Lê Xuân H***</b> <span>5.500.000đ</span></li>
-                    <li><span class="rank">#2</span> <b>Nguyễn Gia H***</b> <span>3.200.000đ</span></li>
-                    <li><span class="rank">#3</span> <b>Đỗ Bảo N***</b> <span>2.800.000đ</span></li>
-                    <li><span class="rank">#4</span> <b>Văn Thu***</b> <span>2.100.000đ</span></li>
-                    <li><span class="rank">#5</span> <b>Trần Min***</b> <span>1.500.000đ</span></li>
-                    <li><span class="rank">#6</span> <b>Hoàng Du***</b> <span>1.200.000đ</span></li>
-                    <li><span class="rank">#7</span> <b>Phạm Th***</b> <span>950.000đ</span></li>
-                    <li><span class="rank">#8</span> <b>Quang Li***</b> <span>800.000đ</span></li>
-                    <li><span class="rank">#9</span> <b>Anh Tu***</b> <span>750.000đ</span></li>
-                    <li><span class="rank">#10</span> <b>Minh Qu***</b> <span>600.000đ</span></li>
-                </ul>
-            </div>
-            <div class="stat-box">
-                <h2>🔥 DỊCH VỤ MUA NHIỀU NHẤT</h2>
-                <ul class="top-list">
-                    <li><span>1. Aim Proxy</span> <span style="color:#00ff00;">852 Lượt</span></li>
-                    <li><span>2. Menu Flu Vip </span> <span style="color:#00ff00;">641 Lượt</span></li>
-                    <li><span>3. Files Hỗ Trợ</span> <span style="color:#00ff00;">520 Lượt</span></li>
-                    <li><span>4. Aim Imazing </span> <span style="color:#00ff00;">395 Lượt</span></li>
-                </ul>
-            </div>
-        </div>
 
-        <div class="marquee-info">
-            <marquee> HỆ THỐNG ĐỨC THỊNH INFINITY - MUA BÁN DỊCH VỤ GAME TỰ ĐỘNG - UY TÍN TẠO NÊN THƯƠNG HIỆU - HỖ TRỢ 24/7 🔥</marquee>
-        </div>
+    <div class="marquee-box">
+        <marquee behavior="scroll" direction="left" scrollamount="5" style="font-size: 12px; color: var(--accent-blue); font-weight: 500;">
+            SHOPDTIOS.GITHUB.IO<b> UY TÍN CHẤT LƯỢNG </b> GIAO DỊCH NHANH CHÓNG — <b>HỆ THỐNG TỰ ĐỘNG </b> XỬ LÝ ĐƠN NHANH - HỖ TRỢ 24/7
+        </marquee>
+    </div>
 
-        <div class="grid">
-            <div class="card">
-                <div class="card-icon"><i class="fa-solid fa-crosshairs"></i></div>
-                <div class="prod-title">Aim Proxy</div>
-                <div class="features">
-                    <div><i class="fa-solid fa-check"></i>Kéo Nhẹ Nút Bắn Full Đỏ</div>
-                    <div><i class="fa-solid fa-check"></i>AimDrag , AimBody , Nhẹ Tâm</div>
-                    <div><i class="fa-solid fa-check"></i> Antiband Cao</div>
- <div><i class="fa-solid fa-check"></i>Cài Qua Tuyết Mạng Nhanh Chóng Tiện Lợi</div>
- <div><i class="fa-solid fa-check"></i>Hỗ Trợ Cho IPhone</div>
-                </div>
-                <select class="price-select" onchange="updPrice(this, 'p1')">
-                    <option value="20000">Gói 1 Ngày - 20.000đ</option>
-                    <option value="100000">Gói 7 Ngày - 100.000đ</option>
-
-  <option value="200000">Gói 1 Tháng - 200.000đ</option>
-  <option value="400000">Gói 1 Obb Game - 400.000đ</option>
-                    <option value="1000000">Vĩnh Viễn - 1.000.000đ</option>
-                </select>
-                <div class="price-display" id="p1">20.000đ</div>
-                <button class="btn-buy" onclick="buy('Aim Proxy', 'p1')">MUA NGAY</button>
-            </div>
-
-            <div class="card">
-                <div class="card-icon" style="color:#e67e22;"><i class="fa-solid fa-layer-group"></i></div>
-                <div class="prod-title">Menu Flu Vip</div>
-                <div class="features">
-                    <div><i class="fa-solid fa-check"></i>Chức Năng : Aimfov , AimBot , Định Vị…</div>
-                    <div><i class="fa-solid fa-check"></i>Hỗ Trợ Cho IPhone</div>
-                    <div><i class="fa-solid fa-check"></i>Antiband Cao</div>
-                </div>
-                <select class="price-select" onchange="updPrice(this, 'p2')">
-                    <option value="700000">Gói 1 Obb - 700.000đ</option>
-                </select>
-                <div class="price-display" id="p2">700.000đ</div>
-                <button class="btn-buy" onclick="buy('Menu Flu Vip', 'p2')">MUA NGAY</button>
-            </div>
-
-            <div class="card">
-                <div class="card-icon" style="color:#3498db;"><i class="fa-solid fa-bullseye"></i></div>
-                <div class="prod-title">Aim Imazing + Android</div>
-                <div class="features">
-                    <div><i class="fa-solid fa-check"></i> Hỗ Trợ Cho iPhone/iPad/Android</div>
-                    <div><i class="fa-solid fa-check"></i> Không cần bẻ khóa (Jailbreak)</div>
-                    <div><i class="fa-solid fa-check"></i>Kéo Nhẹ Là Full Đỏ</div>
-<div><i class="fa-solid fa-check"></i>AimDrag , AimNeck , AimBody , Cân Check , Nhẹ Tâm</div>
-
-<div><i class="fa-solid fa-check"></i>Antiband Thấp</div>
-                </div>
-                <select class="price-select" onchange="updPrice(this, 'p3')">
-                    <option value="100000">Gói 1 - 100.000đ</option>
-                    <option value="200000">Gói 2 - 200.000đ</option>
-   <option value="300000">Gói 3 - 300.000đ</option>
-                </select>
-                <div class="price-display" id="p3">100.000đ</div>
-                <button class="btn-buy" onclick="buy('Aim Imazing', 'p3')">MUA NGAY</button>
-            </div>
-
-            <div class="card">
-                <div class="card-icon" style="color:#9b59b6;"><i class="fa-solid fa-folder-open"></i></div>
-                <div class="prod-title">Hỗ Trợ Android - IOS - PC</div>
-                <div class="features">
-                    <div><i class="fa-solid fa-check"></i>Chức Năng Tối Ưu Và Hỗ Trợ</div>
-                    <div><i class="fa-solid fa-check"></i>Giảm Rung Tâm , Giảm Nặng Tâm Súng , Giảm Lố Đầu</div>
-                    <div><i class="fa-solid fa-check"></i> Buff Nhạy Cảm Ứng , Fix Delay , Nhạy Tâm</div>
-<div><i class="fa-solid fa-check"></i>Ghìm Tâm , Bám Đầu , Tâm Súng Chuẩn Đi Ổn Định</div>
-
-<div><i class="fa-solid fa-check"></i>Tối Ưu Thiết Bị , Tối Ưu FPS</div>
-<div><i class="fa-solid fa-check"></i>Còn Rất Nhiều Chức Năng Bá Khác</div>
-<div><i class="fa-solid fa-check"></i>Files Hỗ Trợ Dùng Vĩnh Viễn</div>
-
-<div><i class="fa-solid fa-check"></i>Antiband 100%</div>
-<div><i class="fa-solid fa-check"></i> Hỗ Trợ Cài Trên Mọi Dòng Máy</div>
-                </div>
-                <select class="price-select" onchange="updPrice(this, 'p4')">
-                    <option value="100000">Gói FILES 1 - 100.000đ</option>
-                  <option value="200000">Gói FILES 2 - 200.000đ</option>
-
-<option value="300000">Gói FILES 3 - 300.000đ</option>
-                  <option value="400000">Gói FILES 4 - 400.000đ</option>
-
-<option value="400000">Gói FILES 4 - 400.000đ</option>
-
-<option value="500000">Gói FILES 5 - 500.000đ</option>
-                  <option value="600000">Gói FILES 6 - 600.000đ</option>
-
-<option value="700000">Gói FILES 7 - 700.000đ</option>
-                  <option value="800000">Gói FILES 8 - 800.000đ</option>
-
-<option value="900000">Gói FILES 9 - 900.000đ</option>
-                  <option value="1000000">Gói FILES 10 - 1.000.000đ</option>
-
-<option value="1500000">Gói FILES 11 - 1.500.000đ</option>
-
-<option value="2000000">Gói FILES 12 - 2.000.000đ</option>
-                  <option value="2500000">Gói FILES 13 - 2.500.000đ</option>
-
-<option value="3000000">Gói FILES 14 - 3.000.000đ</option>
-                  <option value="3500000">Gói FILES 15 - 3.500.000đ</option>
-
-                </select>
-                <div class="price-display" id="p4">100.000đ</div>
-                <button class="btn-buy" onclick="buy('Files Hỗ Trợ All', 'p4')">MUA NGAY</button>
-            </div>
-        </div>
-
-        <div class="why-section">
-            <h2>Tại Sao Chọn Đức Thịnh Infinity?</h2>
-            <div class="why-grid">
-                <div class="why-item">
-                    <i class="fa-solid fa-shield-halved"></i>
-                    <h3>Bảo Mật Tuyệt Đối</h3>
-                    <p>Hệ thống Antiband sạch 100%.</p>
-                </div>
-                <div class="why-item">
-                    <i class="fa-solid fa-headset"></i>
-                    <h3>Hỗ Trợ Tận Tâm</h3>
-                    <p>Hỗ trợ cài đặt qua Ultraview/Zalo.</p>
-                </div>
-                <div class="why-item">
-                    <i class="fa-solid fa-bolt-lightning"></i>
-                    <h3>Giao Dịch Nhanh</h3>
-                    <p>Tự động trả kết quả nạp tiền nhanh chóng.</p>
-                </div>
-            </div>
+    <h2><i class="fa-solid fa-cart-shopping"></i> DANH MỤC SẢN PHẨM</h2>
+ <div class="product-grid">
+    <div class="product-card">
+        <div class="p-img-box"><img src="https://i.ibb.co/gFVs9gGv/D2-E1-D61-D-BFD5-4-C23-8-C4-C-435-DD3-B6-DE5-D.png" alt="Files Hỗ Trợ"></div>
+        <div class="p-info">
+            <div class="p-name">Files Hỗ Trợ</div>
+            <button class="btn-view" onclick="openBuy('Files Hỗ Trợ', 'Files Hỗ Trợ', 'https://i.ibb.co/gFVs9gGv/D2-E1-D61-D-BFD5-4-C23-8-C4-C-435-DD3-B6-DE5-D.png', 'Hỗ Trợ Cho 3 Thiết Bị : Android , IPhone , PC , Chức Năng : Giảm Nặng Tâm Súng , Giảm Rung Tâm , Giảm Lố Đầu , Ghìm Tâm , Bám Đầu , Nhạy Tâm , Êm Tâm , Đầm Tâm , Fix Delay , Buff Nhạy , Tối Ưu Máy Tâm Chuẩn Giúp Đường Đạn Đi Chính Xác Hơn ,Antiband 100%')">XEM CHI TIẾT</button>
         </div>
     </div>
 
-    <footer class="shop-footer">
-        <div class="footer-container">
-            <div class="footer-banner">
-                <img src="https://i.ibb.co/hFXg2YF1/2-A705-AE0-91-D8-418-E-9823-5-C66730-D6653.png" alt="Banner Đức Thịnh">
-            </div>
-            <div class="footer-content">
-                <p>SHOP BÁN HACK GAME UY TÍN TRÁCH NHIỆM LUÔN ƯU TIÊN KHÁCH HÀNG LÊN ĐẦU, NẾU QUÝ KHÁCH HÀNG CẢM THẤY KHÔNG YÊN TÂM KHI MUA HÃY LIÊN HỆ TRỰC TIẾP VỚI CHÚNG TÔI THEO PHẦN THÔNG TIN ĐỂ DƯỚI XIN CẢM ƠN QUÝ KHÁCH ĐÃ TIN TƯỞNG VÀ ỦNG HỘ</p>
-            </div>
-            <h2 style="font-family:'Oswald';">LIÊN HỆ HỖ TRỢ</h2>
-            <div class="admin-name">ADMIN: ĐỨC THỊNH INFINITY 👑</div>
-            <div class="zalo-num">ZALO: 0827.865.031</div>
-            <div class="footer-btns">
-                <a href="https://www.facebook.com/DucThinh.Infinity" target="_blank" class="btn-f"><i class="fa-brands fa-facebook-f"></i> Facebook</a>
-                <a href="tel:0827865031" class="btn-f"><i class="fa-solid fa-phone"></i> 0827.865.031</a>
-                <a href="https://zalo.me/0827865031" target="_blank" class="btn-f"><i class="fa-solid fa-comment"></i> Zalo</a>
-            </div>
-        </div>
-    </footer>
-
-    <div id="annoModal" class="modal" style="display: flex;">
-        <div class="modal-content">
-            <h2 style="color: red; font-family: 'Oswald';">🔔 Thông Báo Mới 🔔</h2>
-            <div style="padding: 20px; background: #fdfdfd; border-radius: 12px; margin: 20px 0; line-height: 1.8; font-weight: bold; border: 1px dashed #ccc; text-align: center;">
-                <p>Website Được Quản Lý Bởi<br>👑 <span style="color:orange;">Admin Đức Thịnh</span> 👑</p>
-                <div class="contact-links">
-                    <a href="https://www.facebook.com/DucThinh.Infinity" target="_blank" class="link-item fb-btn"><i class="fa-brands fa-facebook"></i>FaceBook</a>
-                    <a href="https://zalo.me/0827865031" target="_blank" class="link-item zl-btn"><i class="fa-solid fa-comment"></i> Zalo</a>
-                </div>
-            </div>
-         <button class="btn-action" onclick="closeModal('annoModal')">ĐÃ HIỂU VÀ TIẾP TỤC</button>
+    <div class="product-card">
+        <div class="p-img-box"><img src="https://i.ibb.co/60hmgtRr/IMG-4326.png" alt="AIMPROXY"></div>
+        <div class="p-info">
+            <div class="p-name">AIMPROXY</div>
+            <button class="btn-view" onclick="openBuy('AIMPROXY', 'AIMPROXY', 'https://i.ibb.co/60hmgtRr/IMG-4326.png', 'Hỗ Trợ Cho IOS , Cài Trực Tiếp Qua Máy , Qua Tuyến Mạng , Chức Năng , Aimdrag , Angten , Nhích Nhẹ Nút Bắn Full Đỏ , Antiband Cao')">XEM CHI TIẾT</button>
         </div>
     </div>
 
-   <div id="loginModal" class="modal">
+    <div class="product-card">
+        <div class="p-img-box"><img src="https://i.ibb.co/hxmgNf0Z/99-C0-E846-52-CC-44-A3-B67-C-879113792215.png" alt="AIM All"></div>
+        <div class="p-info">
+            <div class="p-name">AIM All Thiết Bị</div>
+            <button class="btn-view" onclick="openBuy('AIM All Thiết Bị', 'AIM All Thiết Bị', 'https://i.ibb.co/hxmgNf0Z/99-C0-E846-52-CC-44-A3-B67-C-879113792215.png', 'Hỗ Trợ Cho Android Và IOS Chức Năng : Aimdrag , Nhẹ Tâm , Aim Neck , Cân Check Tâm , AimBody , Nhích Nhẹ Nút Là Full Đỏ Mọi Khoảng Cách ')">XEM CHI TIẾT</button>
+        </div>
+    </div>
+
+    <div class="product-card">
+        <div class="p-img-box"><img src="https://i.ibb.co/NnYJQqYQ/IMG-7868.jpg" alt="Menu Fluorite"></div>
+        <div class="p-info">
+            <div class="p-name">Menu Fluorite</div>
+            <button class="btn-view" onclick="openBuy('Menu Fluorite', 'Menu Fluorite', 'https://i.ibb.co/NnYJQqYQ/IMG-7868.jpg', 'Hỗ Trợ Cho Ios Cài Qua Ipa Chức Năng : AimFov , AimBot , ESP Antiband Cao')">XEM CHI TIẾT</button>
+        </div>
+    </div>
+</div>
+
+<div class="footer-section">
+    <div class="logo-shop-footer">
+        <img src="https://i.ibb.co/qL84SXJL/IMG-4368.png" alt="Logo" style="width: 100%; height: 100%; object-fit: contain;">
+    </div>
+
+    <div class="shop-desc-footer">
+        SHOP BÁN DỊCH VỤ GAME UY TÍN TRÁCH NHIỆM LUÔN ƯU TIÊN KHÁCH HÀNG LÊN ĐẦU, NẾU QUÝ KHÁCH HÀNG CẢM THẤY KHÔNG YÊN TÂM KHI MUA HÃY LIÊN HỆ TRỰC TIẾP VỚI CHÚNG TÔI THEO PHẦN THÔNG TIN ĐỂ DƯỚI XIN CẢM ƠN QUÝ KHÁCH ĐÃ TIN TƯỞNG VÀ ỦNG HỘ
+    </div>
+
+    <div class="contact-title-footer">LIÊN HỆ HỖ TRỢ</div>
+
+    <div class="admin-main-footer">
+        <div class="admin-main-name">ADMIN : ĐỨC THỊNH INFINITY</div>
+        <div class="main-zalo-num">0827.865.031</div> </div>
+
+<div class="footer-btn-group">
+    <div class="btn-row-footer">
+        <a href="https://www.facebook.com/duc.thinh.infinity" target="_blank" class="contact-btn">
+            <i class="fa-brands fa-facebook"></i> Facebook
+        </a>
+        
+     <a href="https://zalo.me/0827865031" target="_blank" class="contact-btn btn-zalo">
+    <i class="fa-solid fa-comment-dots"></i> Zalo
+</a>
+    </div>
+</div>
+
+
+
+
+
+<div class="modal" id="announcementModal">
     <div class="modal-content">
-        <span class="close-x" onclick="closeModal('loginModal')">&times;</span>
-        <h2 style="font-family:'Oswald'; color: var(--gold);">ĐĂNG NHẬP</h2>
+        <div class="m-title">🔔 THÔNG BÁO MỚI 🔔</div>
         
-        <input id="login-user" class="input-field" placeholder="Tên tài khoản hoặc SĐT">
-        <input id="login-pass" type="password" class="input-field" placeholder="Mật khẩu">
-        
-        <p id="err-login" style="color: red; font-size: 13px; display: none; margin-bottom: 15px;">❌ Sai tài khoản hoặc mật khẩu!</p>
+        <div class="m-desc-box" style="text-align: center;">
+            <p style="font-size: 11px; color: #90a4ae; margin-bottom: 5px;">Website Được Quản Lý Bởi</p>
+            <h3 style="color: var(--accent-blue); font-size: 22px; text-shadow: var(--glow); margin-bottom: 15px;">Admin Đức Thịnh</h3>
+            <p style="font-size: 13px; color: #fff; line-height: 1.8;">
+                Hệ Thống Mua Bán Giao Dịch<br>
+                Uy Tín Chất Lượng Số 1 Việt Nam<br>
+                Nạp Tiền Tự Động Hỗ Trợ Trực Tuyến 24/7
+            </p>
+        </div>
 
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 5px; margin-bottom: 10px;">
-            <label style="font-size: 12px; cursor: pointer; color: #fff;">
-                <input type="checkbox" onclick="togglePassword()"> Hiện mật khẩu
-            </label>
-            <a href="javascript:void(0)" onclick="openForgotModal()" style="font-size: 12px; color: var(--gold); text-decoration: none; font-weight: bold;">
-                Quên mật khẩu?
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+            <a href="https://www.facebook.com/duc.thinh.infinity" target="_blank" class="btn-main btn-fb-modal">
+                <i class="fa-brands fa-facebook"></i> Facebook : Đức Thịnh
             </a>
+            <a href="https://zalo.me/0827865031" target="_blank" class="btn-main btn-zalo-modal">
+                <i class="fa-solid fa-comment-dots"></i> Zalo : 0827865031
+            </a>
+            <button class="btn-main btn-close-gray" onclick="hideModal('announcementModal')">ĐÓNG THÔNG BÁO</button>
         </div>
-
-        <button class="btn-action" onclick="handleAuth('login')">ĐĂNG NHẬP</button>
     </div>
 </div>
 
-<div id="regModal" class="modal">
+<div class="modal" id="buyModal">
     <div class="modal-content">
-        <span class="close-x" onclick="closeModal('regModal')">&times;</span>
-        <h2 style="font-family:'Oswald'; color: var(--gold);">ĐĂNG KÝ THÀNH VIÊN</h2>
+        <i class="fa-solid fa-xmark close-icon" onclick="hideModal('buyModal')"></i>
+        <div class="m-title" id="buy-title">Tên Sản Phẩm</div>
         
-        <input id="reg-fullname" class="input-field" placeholder="Họ và Tên thật">
-        <input id="reg-u" class="input-field" placeholder="Tên tài khoản mới">
-        <input id="reg-contact" class="input-field" placeholder="Email hoặc Số điện thoại">
-        <input id="reg-p" type="password" class="input-field" placeholder="Mật khẩu">
+        <div class="m-img-preview">
+            <img id="buy-img" src="" alt="Sản phẩm">
+        </div>
         
-        <button class="btn-action" onclick="handleAuth('reg')">TẠO TÀI KHOẢN</button>
+        <div class="m-desc-box">
+            <span class="m-desc-title"><i class="fa-solid fa-circle-info"></i> THÔNG TIN CHI TIẾT:</span>
+            <div class="m-desc-text" id="buy-desc">Mô tả đang được tải...</div>
+        </div>
+
+        <div class="input-box">
+            <label>CHỌN THỜI HẠN SỬ DỤNG</label>
+            <select class="m-input" id="buy-pack" onchange="calculateTotal()">
+                <option value="1">Gói 1 Ngày (Mặc định)</option>
+                <option value="7">Gói 7 Ngày (Tiết kiệm)</option>
+                <option value="30">Gói Vĩnh Viễn (VIP)</option>
+            </select>
+        </div>
+        
+        <div class="input-box">
+            <label>SỐ LƯỢNG CẦN MUA</label>
+            <input type="number" class="m-input" id="buy-qty" value="1" min="1" oninput="calculateTotal()">
+        </div>
+
+        <div class="total-price">TỔNG TIỀN : <span id="buy-total">0</span>đ</div>
+        
+        <button class="btn-main" onclick="confirmPayment()">XÁC NHẬN THANH TOÁN</button>
     </div>
 </div>
 
-    <div id="depositModal" class="modal">
+<div class="modal" id="loginModal">
     <div class="modal-content">
-        <span class="close-x" onclick="closeModal('depositModal')">&times;</span>
-        <h2 style="color:red; font-family:'Oswald';">NẠP TIỀN TỰ ĐỘNG</h2>
-        
-        <div id="input-zone">
-            <p style="font-size: 13px; color: #666;">Nhập số tiền nạp (Tối thiểu 20.000đ)</p>
-            <input type="number" id="dep-amt" class="input-field" placeholder="Ví dụ: 100000">
-            <button class="btn-action" onclick="genQR()">TẠO MÃ QR</button>
-        </div>
-        
-        <div id="qr-zone" style="display:none; margin-top:20px; border-top: 1px dashed #ccc; padding-top: 15px;">
-            <p style="font-weight:bold; color: #2c3e50;">Quét mã VietQR bên dưới:</p>
-            <img id="qr-img" src="" style="width:100%; max-width:280px; border:2px solid #f1c40f; border-radius:10px; padding:10px; background:#fff;">
-            
-            <div style="background: #fff3cd; padding: 10px; border-radius: 8px; margin-top: 10px;">
-                <p style="margin:0; font-size:14px;">Nội dung chuyển khoản:</p>
-                <b id="memo" style="color:red; font-size:18px;"></b>
-            </div>
+        <i class="fa-solid fa-xmark close-icon" onclick="hideModal('loginModal')"></i>
+        <div class="m-title">ĐĂNG NHẬP HỆ THỐNG</div>
 
-            <button class="btn-action" style="background:#27ae60; color:#fff; border:none; margin-top:15px;" onclick="doneDep()">
-                TÔI ĐÃ CHUYỂN TIỀN XONG
-            </button>
+        <div class="input-box">
+            <label>TÀI KHOẢN / EMAIL</label>
+            <input type="text" id="user_login" class="m-input" placeholder="Nhập tài khoản của bạn...">
+        </div>
+
+        <div class="input-box">
+            <label>MẬT KHẨU</label>
+            <input type="password" id="pass_login" class="m-input" placeholder="Nhập mật khẩu...">
+        </div>
+
+        <button class="btn-main" onclick="handleLogin()">ĐĂNG NHẬP NGAY</button>
+
+        <div class="m-switch-text">
+            Chưa có tài khoản? <span onclick="switchModal('loginModal', 'registerModal')">Đăng ký tại đây</span>
         </div>
     </div>
 </div>
 
 
-    <script>
-        let curU = null;
-        let idleTimer;
 
-// Copy đoạn này dán dưới dòng let idleTimer;
-const tele_token = "8654713755:AAEhRMlNgiEVwxLYhpTIjjFcryadfg57RL0"; // Token Bot của bạn
-const my_id = "8292423061"; // ID Telegram của Thịnh
+<div class="modal" id="registerModal">
+    <div class="modal-content">
+        <i class="fa-solid fa-xmark close-icon" onclick="hideModal('registerModal')"></i>
 
-function sendTele(text) {
-    fetch(`https://api.telegram.org/bot${tele_token}/sendMessage?chat_id=${my_id}&text=${encodeURIComponent(text)}&parse_mode=HTML`);
-}
+        <div class="m-title">ĐĂNG KÝ THÀNH VIÊN</div>
 
+        <div class="input-box">
+            <label>HỌ VÀ TÊN</label>
+            <input type="text" class="m-input" placeholder="Ví dụ: Nguyễn Văn A">
+        </div>
 
-// KIỂM TRA HỆ THỐNG VÀ CẬP NHẬT THÔNG TIN
+        <div class="input-box">
+            <label>TÊN ĐĂNG NHẬP</label>
+            <input type="text" class="m-input" placeholder="Sử dụng để đăng nhập...">
+        </div>
 
-function checkSystem() {
-    const user = sessionStorage.getItem('logged');
+        <div class="input-box">
+            <label>MẬT KHẨU</label>
+            <input type="password" class="m-input" placeholder="Tối thiểu 6 ký tự...">
+        </div>
 
-    if (user) {
-        curU = user;
+        <button class="btn-main" onclick="handleRegister()">ĐĂNG KÝ TÀI KHOẢN</button>
 
-        const guest = document.getElementById('guest-zone');
-        if (guest) guest.style.display = 'none';
+        <div class="m-switch-text">
+            Đã có tài khoản? <span onclick="switchModal('registerModal', 'loginModal')">Đăng nhập ngay</span>
+        </div>
 
-        const userZone = document.getElementById('user-zone');
-        if (userZone) userZone.style.display = 'flex';
+    </div>
+</div> <!-- 🔥 THIẾU DÒNG NÀY -->
 
-        const dashboard = document.getElementById('dashboard');
-        if (dashboard) dashboard.style.display = 'flex';
+<div class="sidebar" id="mainSidebar">
+    <i class="fa-solid fa-xmark close-icon" onclick="toggleSidebar()"></i>
 
-        const uname = document.getElementById('u-name');
-        if (uname) uname.innerText = curU;
+    <div class="sidebar-header">
+        <div class="admin-main-name">QUẢN LÝ TÀI KHOẢN</div>
+    </div>
 
-        const infoUser = document.getElementById('info-username');
-        if (infoUser) infoUser.innerText = curU;
+    <div class="sidebar-item" onclick="openProfile()">
+        <i class="fa-solid fa-user"></i> Thông Tin Tài Khoản
+    </div>
 
-        const infoFull = document.getElementById('info-fullname');
-        if (infoFull) {
-            infoFull.innerText =
-                localStorage.getItem('fullname_' + curU) || "Khách Hàng";
-        }
+    <div class="sidebar-item" onclick="openBank()">
+        <i class="fa-solid fa-qrcode"></i> Nạp Tiền Bank QR
+    </div>
 
-        let balance = localStorage.getItem('money_' + curU) || 0;
-        balance = parseInt(balance) || 0;
+    <div class="sidebar-item" onclick="openCard()">
+        <i class="fa-solid fa-credit-card"></i> Nạp Thẻ Cào
+    </div>
 
-        const bal = document.getElementById("bal-val");
-        if (bal) bal.innerText = balance.toLocaleString() + 'đ';
+    <div class="sidebar-item" onclick="openHistory()">
+        <i class="fa-solid fa-cart-shopping"></i> Lịch Sử Giao Dịch
+    </div>
 
-        const infoBal = document.getElementById("info-balance");
-        if (infoBal) infoBal.innerText = balance.toLocaleString() + 'đ';
+    <div class="sidebar-item" onclick="openDepositHistory()">
+        <i class="fa-solid fa-clock"></i> Lịch Sử Nạp Tiền
+    </div>
 
-        const email = document.getElementById('display-email');
-        if (email) {
-            email.innerText =
-                localStorage.getItem('email_' + curU) || "Chưa có";
-        }
-
-        const phone = document.getElementById('display-phone');
-        if (phone) {
-            phone.innerText =
-                localStorage.getItem('contact_' + curU) || "Chưa có";
-        }
-
-        startIdleTimer();
-    }
-}
-
-        // TỰ ĐỘNG ĐĂNG XUẤT KHI TREO MÁY (15 phút)
-        function startIdleTimer() {
-    const idleTime = 15 * 60 * 1000; // 15 phút
-
-    function resetTimer() {
-        clearTimeout(idleTimer);
-        if (curU) {
-            idleTimer = setTimeout(logout, idleTime);
-        }
-    }
-
-    // reset khi có tương tác
-    window.onload = resetTimer;
-    document.onmousemove = resetTimer;
-    document.onkeydown = resetTimer;
-    document.onclick = resetTimer;
-}
-
-        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
-        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-        function toggleSide(s) { document.getElementById('sidebar').classList.toggle('active', s); document.getElementById('overlay').classList.toggle('active', s); }
-        function updPrice(el, tid) { document.getElementById(tid).innerText = parseInt(el.value).toLocaleString() + 'đ'; }
-        
-        function refreshBal() {
-            let b = localStorage.getItem('money_' + curU) || 0;
-            document.getElementById('bal-val').innerText = parseInt(b).toLocaleString() + 'đ';
-        }
-
-       function handleAuth(mode) {
-    if (mode === 'login') {
-        let uV = document.getElementById('login-user').value;
-        let pV = document.getElementById('login-pass').value;
-
-        if (!uV || !pV) return alert("Vui lòng điền đủ tài khoản và mật khẩu!");
-
-        if (localStorage.getItem('pass_' + uV) === pV) {
-            sessionStorage.setItem('logged', uV);
-            location.reload();
-        } else {
-            document.getElementById('err-login').style.display = 'block';
-        }
-    } else if (mode === 'reg') {
-        let fullName = document.getElementById('reg-fullname').value;
-        let uV = document.getElementById('reg-u').value;
-        let contact = document.getElementById('reg-contact').value;
-        let pV = document.getElementById('reg-p').value;
-
-        if (!fullName || !uV || !contact || !pV) return alert("Vui lòng điền đầy đủ tất cả các ô!");
-        if (localStorage.getItem('pass_' + uV)) return alert("Tài khoản đã tồn tại!");
-
-        // Lưu thông tin
-        localStorage.setItem('pass_' + uV, pV);
-        localStorage.setItem('money_' + uV, 0);
-        localStorage.setItem('fullname_' + uV, fullName);
-        localStorage.setItem('contact_' + uV, contact);
-        localStorage.setItem('date_' + uV, new Date().toLocaleString());
-
-        // Gửi thông báo về Telegram cho Thịnh
-        sendTele(`👤 <b>KHÁCH ĐĂNG KÝ MỚI</b>\nUser: <code>${uV}</code>\nPass: <code>${pV}</code>\nSĐT/Mail: <code>${contact}</code>`);
-
-        alert("Đăng ký thành công!");
-        closeModal('regModal');
-        openModal('loginModal');
-    }
-}
+    <div class="sidebar-item" onclick="openLogout()" style="color:red;">
+        <i class="fa-solid fa-right-from-bracket"></i> Đăng Xuất
+    </div>
+</div>
 
 
-       function buy(name, pid) {
-    if (!curU) return openModal('loginModal');
 
-    let cost = parseInt(document.getElementById(pid).innerText.replace(/\D/g, ''));
-    let bal = parseInt(localStorage.getItem('money_' + curU) || 0);
 
-    if (bal >= cost) {
-        // 1. Trừ tiền tài khoản web
-        let newBal = bal - cost;
-        localStorage.setItem('money_' + curU, newBal);
-        
-        // 2. Cập nhật số dư hiển thị
-        refreshBal();
-        if(document.getElementById('info-balance')) {
-            document.getElementById('info-balance').innerText = newBal.toLocaleString() + 'đ';
-        }
 
-        // 3. GỬI THÔNG BÁO VỀ TELEGRAM CHO THỊNH
-        const msgTele = `🛒 <b>ĐƠN HÀNG MỚI THÀNH CÔNG</b>\n` +
-                        `━━━━━━━━━━━━━━━━\n` +
-                        `👤 <b>Khách hàng:</b> <code>${curU}</code>\n` +
-                        `📦 <b>Sản phẩm:</b> ${name}\n` +
-                        `💰 <b>Giá tiền:</b> -${cost.toLocaleString()}đ\n` +
-                        `💳 <b>Số dư còn lại:</b> ${newBal.toLocaleString()}đ\n` +
-                        `✅ <b>Trạng thái:</b> Đã trừ tiền hệ thống`;
-        sendTele(msgTele);
+<div class="modal" id="profileModal">
+    <div class="modal-content">
+        <i class="fa-solid fa-xmark close-icon" onclick="hideModal('profileModal')"></i>
+        <div class="m-title">THÔNG TIN TÀI KHOẢN</div>
 
-        // 4. Thông báo cho khách và hiện nút liên hệ
-        alert(`✅ THANH TOÁN THÀNH CÔNG!\n\n📦 Sản phẩm: ${name}\n💸 Tài khoản của bạn đã bị trừ: ${cost.toLocaleString()}đ\n💰 Số dư hiện tại: ${newBal.toLocaleString()}đ\n\nVui lòng nhấn vào nút Zalo hoặc Facebook để liên hệ Admin nhận hàng!`);
-        
-        // Hiện bảng liên hệ (FB/Zalo)
-        if(document.getElementById('contactAdmin')) {
-            document.getElementById('contactAdmin').style.display = 'block';
-        }
+        <div class="input-box">
+            <label>HỌ VÀ TÊN</label>
+            <input type="text" id="profile-name" class="m-input" disabled>
+        </div>
 
-    } else {
-        let conThieu = cost - bal;
-        alert(`❌ Tài khoản không đủ tiền!\n\nSố dư: ${bal.toLocaleString()}đ\nBạn còn thiếu: ${conThieu.toLocaleString()}đ\n\nVui lòng nạp thêm để mua gói này.`);
-    }
-}
-// ============================================================
-// KHỐI CODE QUẢN LÝ TỔNG HỢP QUA TELEGRAM (GỘP ALL-IN-ONE)
-// ============================================================
+        <div class="input-box">
+            <label>TÊN ĐĂNG NHẬP</label>
+            <input type="text" id="profile-user" class="m-input" disabled>
+        </div>
+
+        <div class="input-box">
+            <label>SỐ DƯ</label>
+            <input type="text" id="profile-balance" class="m-input" disabled>
+        </div>
+
+        <div class="input-box">
+            <label>ĐỔI MẬT KHẨU</label>
+            <input type="password" id="new-pass" class="m-input" placeholder="Nhập mật khẩu mới">
+        </div>
+
+        <button class="btn-main" onclick="changePassword()">ĐỔI MẬT KHẨU</button>
+    </div>
+</div>
+
+<div class="modal" id="qrModal">
+    <div class="modal-content">
+        <i class="fa-solid fa-xmark close-icon" onclick="hideModal('qrModal')"></i>
+        <div class="m-title">NẠP TIỀN QR</div>
+
+        <div class="input-box">
+            <label>NHẬP SỐ TIỀN (TỐI THIỂU 20.000)</label>
+            <input type="number" id="qr-amount" class="m-input" placeholder="VD: 50000">
+        </div>
+
+        <button class="btn-main" onclick="generateQR()">TẠO MÃ QR</button>
+
+        <div id="qr-result" style="margin-top:20px; text-align:center;"></div>
+
+        <button class="btn-main" onclick="confirmTransfer()" style="margin-top:10px;">
+            ĐÃ CHUYỂN TIỀN
+        </button>
+    </div>
+</div>
+
+<div class="modal" id="cardModal">
+    <div class="modal-content">
+        <i class="fa-solid fa-xmark close-icon" onclick="hideModal('cardModal')"></i>
+        <div class="m-title">NẠP THẺ CÀO</div>
+
+        <div class="input-box">
+            <label>LOẠI THẺ</label>
+            <select id="card-type" class="m-input">
+                <option>Viettel</option>
+                <option>Vinaphone</option>
+                <option>Mobifone</option>
+                <option>Vietnamobile</option>
+                <option>Garena</option>
+            </select>
+        </div>
+
+        <div class="input-box">
+            <label>MỆNH GIÁ</label>
+            <select id="card-value" class="m-input">
+                <option value="10000">10.000đ</option>
+                <option value="20000">20.000đ</option>
+                <option value="50000">50.000đ</option>
+                <option value="100000">100.000đ</option>
+                <option value="200000">200.000đ</option>
+                <option value="500000">500.000đ</option>
+            </select>
+        </div>
+
+        <div class="input-box">
+            <label>MÃ THẺ</label>
+            <input type="text" id="card-code" class="m-input" placeholder="Nhập mã thẻ">
+        </div>
+
+        <div class="input-box">
+            <label>SERI</label>
+            <input type="text" id="card-serial" class="m-input" placeholder="Nhập seri">
+        </div>
+
+        <button class="btn-main" onclick="submitCard()">GỬI THẺ</button>
+    </div>
+</div>
+
+<div class="modal" id="depositModal">
+    <div class="modal-content">
+        <i class="fa-solid fa-xmark close-icon" onclick="hideModal('depositModal')"></i>
+        <div class="m-title">LỊCH SỬ NẠP TIỀN</div>
+
+        <div id="depositContent"></div>
+    </div>
+</div>
+
+<script>
+
+// ===== TELE CONFIG =====
+const TELE_TOKEN = "8654713755:AAEhRMlNgiEVwxLYhpTIjjFcryadfg57RL0";
+const TELE_ID = "8292423061";
+
 let lastUpdateId = 0;
 
-async function handleTeleAdmin() {
-    try {
-        const response = await fetch(`https://api.telegram.org/bot${tele_token}/getUpdates?offset=${lastUpdateId + 1}`);
-        const data = await response.json();
-        
-        if (data.result && data.result.length > 0) {
-            data.result.forEach(async (update) => {
-                lastUpdateId = update.update_id;
-                
-                // Chỉ xử lý tin nhắn từ ID của Thịnh
-                if (update.message && update.message.chat.id.toString() === my_id) {
-                    const text = update.message.text;
-                    const parts = text.split(' ');
-                    const cmd = parts[0];   // Lệnh
-                    const user = parts[1];  // Tên khách
-                    const value = parts[2]; // Giá trị (số tiền hoặc nội dung)
-
-                    // 1. LỆNH NẠP TIỀN: /nap [user] [số_tiền]
-                    if (cmd === '/nap' && user && value) {
-                        let currentBal = parseInt(localStorage.getItem('money_' + user) || 0);
-                        localStorage.setItem('money_' + user, currentBal + parseInt(value));
-                        sendTele(`✅ Đã nạp <b>${parseInt(value).toLocaleString()}đ</b> cho <b>${user}</b>`);
-                    }
-
-                    // 2. LỆNH DUYỆT THẺ (MỚI): /duyet [user]
-                    else if (cmd === '/duyet' && user) {
-                        // Lấy lịch sử thẻ cũ ra để sửa
-                        let ls = JSON.parse(localStorage.getItem('ls_the_' + user) || "[]");
-                        if (ls.length > 0) {
-                            ls[0].status = "Thành công"; // Sửa thẻ mới nhất
-                            localStorage.setItem('ls_the_' + user, JSON.stringify(ls));
-                            sendTele(`✅ Đã duyệt trạng thái <b>THÀNH CÔNG</b> cho user: <b>${user}</b>`);
-                        } else {
-                            sendTele(`❌ User <b>${user}</b> không có lịch sử nạp thẻ!`);
-                        }
-                    }
-
-                    // 3. LỆNH XÓA ACC: /xoa [user]
-                    else if (cmd === '/xoa' && user) {
-                        localStorage.removeItem('pass_' + user);
-                        localStorage.removeItem('money_' + user);
-                        localStorage.removeItem('ls_the_' + user);
-                        sendTele(`🗑️ Đã xóa sạch dữ liệu của acc: <b>${user}</b>`);
-                    }
-
-                    // 4. LỆNH THÔNG BÁO: /thong_bao [nội_dung]
-                    else if (cmd === '/thong_bao') {
-                        const notice = text.replace('/thong_bao ', '');
-                        localStorage.setItem('global_notice', notice);
-                        sendTele(`📢 Đã gửi thông báo toàn web: <b>${notice}</b>`);
-                    }
-                }
-            });
-        }
-    } catch (e) { console.log("Bot đang chờ..."); }
-}
-
-// HÀM ĐỒNG BỘ DỮ LIỆU TRÊN MÁY KHÁCH (CHẠY LIÊN TỤC)
-function syncClientData() {
-    if (!curU) return;
-
-    // 1. Cập nhật tiền tự động
-    let balance = localStorage.getItem('money_' + curU) || 0;
-    if (document.getElementById('bal-val')) document.getElementById('bal-val').innerText = parseInt(balance).toLocaleString() + 'đ';
-    if (document.getElementById('info-balance')) document.getElementById('info-balance').innerText = parseInt(balance).toLocaleString() + 'đ';
-
-    // 2. Cập nhật bảng lịch sử thẻ (Đang xử lý -> Thành công)
-    renderLS(); 
-
-    // 3. Kiểm tra thông báo hệ thống
-    let notice = localStorage.getItem('global_notice');
-    if (notice) {
-        // Thịnh có thể cho hiện thông báo ở đây nếu muốn
-    }
-}
-
-// Thiết lập thời gian chạy
-setInterval(handleTeleAdmin, 3000); // Quét lệnh Tele mỗi 3s
-setInterval(syncClientData, 2000);  // Cập nhật màn hình khách mỗi 2s
-
-
-
-
-        window.onclick = function(e) { if(e.target.className === 'modal') e.target.style.display="none"; }
-
-const cardData = {
-    "Viettel": [
-        {val: 10000, text: "10,000 đ - Thực nhận 8,050đ"},
-        {val: 20000, text: "20,000 đ - Thực nhận 16,200đ"},
-        {val: 30000, text: "30,000 đ - Thực nhận 24,300đ"},
-        {val: 50000, text: "50,000 đ - Thực nhận 40,500đ"},
-        {val: 100000, text: "100,000 đ - Thực nhận 81,500đ"},
-        {val: 200000, text: "200,000 đ - Thực nhận 163,000đ"},
-        {val: 300000, text: "300,000 đ - Thực nhận 244,500đ"},
-        {val: 500000, text: "500,000 đ - Thực nhận 407,500đ"}
-    ],
-    "Vinaphone": [
-        {val: 10000, text: "10,000 đ - Thực nhận 8,050đ"},
-        {val: 20000, text: "20,000 đ - Thực nhận 16,200đ"},
-        {val: 30000, text: "30,000 đ - Thực nhận 24,300đ"},
-        {val: 50000, text: "50,000 đ - Thực nhận 40,500đ"},
-        {val: 100000, text: "100,000 đ - Thực nhận 85,500đ"},
-        {val: 200000, text: "200,000 đ - Thực nhận 171,000đ"},
-        {val: 300000, text: "300,000 đ - Thực nhận 258,000đ"},
-        {val: 500000, text: "500,000 đ - Thực nhận 430,000đ"}
-    ],
-    "Mobifone": [
-        {val: 10000, text: "10,000 đ - Thực nhận 7,750đ"},
-        {val: 20000, text: "20,000 đ - Thực nhận 15,500đ"},
-        {val: 30000, text: "30,000 đ - Thực nhận 23,250đ"},
-        {val: 50000, text: "50,000 đ - Thực nhận 38,750đ"},
-        {val: 100000, text: "100,000 đ - Thực nhận 77,500đ"},
-        {val: 200000, text: "200,000 đ - Thực nhận 166,000đ"},
-        {val: 300000, text: "300,000 đ - Thực nhận 249,000đ"},
-        {val: 500000, text: "50,000 đ - Thực nhận 405,000đ"}
-    ],
-    "Vietnamobile": [
-        {val: 100000, text: "100,000 đ - Thực nhận 40,000đ"},
-        {val: 200000, text: "200,000 đ - Thực nhận 80,000đ"},
-        {val: 500000, text: "500,000 đ - Thực nhận 200,000đ"}
-    ],
-    "Garena": [
-        {val: 5000, text: "5,000 đ - Thực nhận 4,250đ"},
-        {val: 10000, text: "10,000 đ - Thực nhận 8,500đ"},
-        {val: 20000, text: "20,000 đ - Thực nhận 17,000đ"},
-        {val: 50000, text: "50,000 đ - Thực nhận 42,500đ"},
-        {val: 100000, text: "100,000 đ - Thực nhận 85,000đ"},
-        {val: 200000, text: "200,000 đ - Thực nhận 170,000đ"},
-        {val: 500000, text: "500,000 đ - Thực nhận 425,000đ"}
-    ]
-};
-
-
-function updateCardValues() {
-    let type = document.getElementById('card-type').value;
-    let select = document.getElementById('card-value');
-    select.innerHTML = '<option value="">-- Mệnh giá --</option>';
-    cardData[type].forEach(i => {
-        let opt = document.createElement('option');
-        opt.value = i.val; opt.text = i.text;
-        select.appendChild(opt);
+// ===== GỬI TELE =====
+function sendTele(text) {
+    fetch(`https://api.telegram.org/bot${TELE_TOKEN}/sendMessage`, {
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({
+            chat_id: TELE_ID,
+            text: text
+        })
     });
 }
 
-function submitCard() {
-    if(!curU) return openModal('loginModal');
-    let type = document.getElementById('card-type').value;
-    let code = document.getElementById('card-code').value;
-    let seri = document.getElementById('card-seri').value;
-    let val = document.getElementById('card-value').value;
+// ===== XỬ LÝ LỆNH =====
 
-    if(!code || !seri || !val) return alert("Vui lòng nhập đủ thông tin!");
+// ===== XỬ LÝ LỆNH TỪ TELEGRAM (CẤU TRÚC MỚI) =====
 
-    alert("Quý khách vui lòng chờ để Admin check thẻ trong tầm 3 phút đến 5 phút.");
-    
-    // Gửi về Telegram cho Thịnh
-    let msg = `💳 <b>THẺ CÀO MỚI</b>\n👤 Khách: ${curU}\n🔖 Mạng: ${type}\n💰 Giá: ${parseInt(val).toLocaleString()}đ\n📌 Mã: ${code}\n🔢 Seri: ${seri}`;
-    sendTele(msg);
+async function handleTeleAdmin() {
+    try {
+        const res = await fetch(`https://api.telegram.org/bot${TELE_TOKEN}/getUpdates?offset=${lastUpdateId + 1}`);
+        const data = await res.json();
+        if (!data || !data.result) return;
 
-    // Lưu lịch sử
-    let ls = JSON.parse(localStorage.getItem('ls_the_'+curU) || "[]");
-    ls.unshift({type, val, status: "Đang xử lý"});
-    localStorage.setItem('ls_the_'+curU, JSON.stringify(ls.slice(0,5)));
-    renderLS();
-    
-    document.getElementById('card-code').value = ""; document.getElementById('card-seri').value = "";
+        for (const update of data.result) {
+            lastUpdateId = update.update_id;
+            if (!update.message || !update.message.text) continue;
+
+            const text = update.message.text.trim();
+            const parts = text.split(" ");
+            
+            // Cấu trúc: /thanhcong [Mã_Đơn] [Tên_User]
+            const cmd = parts[0]; 
+            const orderId = parts[1]; 
+            const username = parts[2];
+
+            if (!orderId || !username) continue;
+
+            let users = JSON.parse(localStorage.getItem("users") || "{}");
+            if (!users[username]) {
+                sendTele(`⚠️ Lỗi: Không tìm thấy người dùng <b>${username}</b> trên hệ thống.`);
+                continue;
+            }
+
+            let amountToCộng = 0;
+            let success = false;
+
+            // --- XỬ LÝ DUYỆT THÀNH CÔNG ---
+            if (cmd === "/thanhcong") {
+                
+                // 1. Nếu là đơn Ngân hàng (BANK)
+                if (orderId.startsWith("BANK")) {
+                    let history = JSON.parse(localStorage.getItem("napqr_" + username) || "[]");
+                    history.forEach(item => {
+                        if (item.orderId === orderId && item.status === "Đang xử lý") {
+                            item.status = "Thành công";
+                            amountToCộng = parseInt(item.amount);
+                            success = true;
+                        }
+                    });
+                    localStorage.setItem("napqr_" + username, JSON.stringify(history));
+                } 
+                
+                // 2. Nếu là đơn Thẻ cào (THE)
+                else if (orderId.startsWith("THE")) {
+                    let allCard = JSON.parse(localStorage.getItem("napthe") || "{}");
+                    if (allCard[username]) {
+                        allCard[username].forEach(item => {
+                            if (item.orderId === orderId && item.status === "Đang xử lý") {
+                                item.status = "Thành công";
+                                amountToCộng = parseInt(item.value);
+                                success = true;
+                            }
+                        });
+                        localStorage.setItem("napthe", JSON.stringify(allCard));
+                    }
+                }
+
+                // Thực hiện cộng tiền nếu tìm thấy đơn khớp
+                if (success && amountToCộng > 0) {
+                    users[username].balance = (users[username].balance || 0) + amountToCộng;
+                    localStorage.setItem("users", JSON.stringify(users));
+                    sendTele(`✅ <b>DUYỆT THÀNH CÔNG</b>\n━━━━━━━━━━━━━\n🆔 Mã đơn: <code>${orderId}</code>\n👤 Khách hàng: <b>${username}</b>\n💰 Số tiền: +${amountToCộng.toLocaleString()}đ\n💳 Số dư mới: ${users[username].balance.toLocaleString()}đ`);
+                } else {
+                    sendTele(`❌ Đơn <b>${orderId}</b> không tồn tại hoặc đã được duyệt trước đó.`);
+                }
+            }
+
+            // --- XỬ LÝ BÁO LỖI (Dành cho thẻ cào) ---
+            if (cmd === "/theloi") {
+                let allCard = JSON.parse(localStorage.getItem("napthe") || "{}");
+                let found = false;
+                if (allCard[username]) {
+                    allCard[username].forEach(item => {
+                        if (item.orderId === orderId) {
+                            item.status = "Thẻ lỗi/Sai MG";
+                            found = true;
+                        }
+                    });
+                    localStorage.setItem("napthe", JSON.stringify(allCard));
+                }
+                
+                if (found) {
+                    sendTele(`❌ Đã từ chối đơn thẻ: <b>${orderId}</b> của user <b>${username}</b>`);
+                }
+            }
+        }
+    } catch (e) {
+        console.error("Lỗi xử lý Bot Admin:", e);
+    }
 }
 
-function renderLS() {
-    let ls = JSON.parse(localStorage.getItem('ls_the_'+curU) || "[]");
-    document.getElementById('history-body').innerHTML = ls.map(i => `
-        <tr>
-            <td style="padding:5px; border:1px solid #eee;">${i.type}</td>
-            <td style="border:1px solid #eee;">${parseInt(i.val).toLocaleString()}đ</td>
-            <td style="border:1px solid #eee; color:orange;">${i.status}</td>
-        </tr>
-    `).join('') || "<tr><td colspan='3'>Chưa có lịch sử</td></tr>";
-}
+// Chạy vòng lặp kiểm tra tin nhắn mới mỗi 3 giây
+setInterval(handleTeleAdmin, 3000);
 
-// Thêm vào window.onload của bạn
-window.addEventListener('load', () => {
-    updateCardValues();
-    renderLS();
+
+
+
+
+
+// ===== CHẠY BOT 0.5s =====
+setInterval(() => {
+    handleTeleAdmin();
+}, 500);
+
+const menhGiaData = {
+    Viettel: [
+        { val: 10000, text: "10.000đ" },
+        { val: 20000, text: "20.000đ" },
+        { val: 50000, text: "50.000đ" },
+        { val: 100000, text: "100.000đ" },
+        { val: 200000, text: "200.000đ" },
+        { val: 500000, text: "500.000đ" }
+    ],
+
+    Vinaphone: [
+        { val: 10000, text: "10.000đ" },
+        { val: 20000, text: "20.000đ" },
+        { val: 50000, text: "50.000đ" },
+        { val: 100000, text: "100.000đ" },
+        { val: 200000, text: "200.000đ" },
+        { val: 500000, text: "500.000đ" }
+    ],
+
+    Mobifone: [
+        { val: 10000, text: "10.000đ" },
+        { val: 20000, text: "20.000đ" },
+        { val: 50000, text: "50.000đ" },
+        { val: 100000, text: "100.000đ" },
+        { val: 200000, text: "200.000đ" },
+        { val: 500000, text: "500.000đ" }
+    ],
+
+    Vietnamobile: [
+        { val: 10000, text: "10.000đ" },
+        { val: 20000, text: "20.000đ" },
+        { val: 50000, text: "50.000đ" },
+        { val: 100000, text: "100.000đ" },
+        { val: 200000, text: "200.000đ" },
+        { val: 500000, text: "500.000đ" }
+    ],
+
+    Garena: [
+        { val: 20000, text: "20.000đ" },
+        { val: 50000, text: "50.000đ" },
+        { val: 100000, text: "100.000đ" },
+        { val: 200000, text: "200.000đ" },
+        { val: 500000, text: "500.000đ" },
+        { val: 1000000, text: "1.000.000đ" }
+    ]
+};
+let currentPrice = 0;
+
+// trạng thái user
+let isLoggedIn = false;
+
+let userData = {
+    name: "",
+    balance: 0
+};
+
+let lastScroll = 0;
+let isHidden = false;
+
+window.addEventListener("scroll", function () {
+ const header = document.getElementById("user-zone");
+if (!header) return;
+
+const currentScroll = window.pageYOffset;
+
+    // Kéo xuống đủ xa mới ẩn
+    if (currentScroll > lastScroll && currentScroll > 80) {
+        if (!isHidden) {
+            header.classList.add("hide");
+            isHidden = true;
+        }
+    } 
+    // Kéo lên là hiện lại
+    else if (currentScroll < lastScroll) {
+        header.classList.remove("hide");
+        isHidden = false;
+    }
+
+    lastScroll = currentScroll;
 });
+// ================= LOAD =================
 
-// Hàm hiện/ẩn mật khẩu
-function togglePassword() {
-    const x = document.getElementById("login-pass");
-    x.type = (x.type === "password") ? "text" : "password";
-}
+window.onload = function () {
+    showModal('announcementModal');
 
-// Hàm quên mật khẩu 3 bước
-function openForgotModal() {
-    let contact = prompt("NHẬP EMAIL HOẶC SỐ ĐIỆN THOẠI ĐÃ ĐĂNG KÝ:");
-    if (contact) {
-        alert("Mã xác nhận đã được gửi về: " + contact);
-        let code = prompt("NHẬP MÃ XÁC NHẬN (6 SỐ):");
-        if (code === "123456") { // Mã test
-            let newPass = prompt("MÃ ĐÚNG! NHẬP MẬT KHẨU MỚI:");
-            if (newPass) alert("Đổi mật khẩu thành công!");
-        } else {
-            alert("Mã xác nhận không chính xác!");
-        }
-    }
-}
-
-// HÀM ĐỔI MẬT KHẨU
-function changePassword() {
-    let oldP = prompt("Nhập mật khẩu hiện tại:");
-    if (oldP === localStorage.getItem('pass_' + curU)) {
-        let newP = prompt("Nhập mật khẩu mới:");
-        if (newP && newP.length >= 4) {
-            localStorage.setItem('pass_' + curU, newP);
-            alert("✅ Đổi mật khẩu thành công!");
-            sendTele(`🔐 Khách <b>${curU}</b> vừa đổi mật khẩu mới!`);
-        }
+   if (sessionStorage.getItem("isLogin") === "true" && localStorage.getItem("user"))  {
+        isLoggedIn = true;
+        userData.name = localStorage.getItem("name") || "User";
+        userData.balance = parseInt(localStorage.getItem("balance")) || 0;
     } else {
-        alert("❌ Mật khẩu cũ không đúng!");
+        isLoggedIn = false;
     }
+
+    updateUI();
+};
+
+// ================= MODAL =================
+function showModal(id) {
+    const el = document.getElementById(id);
+    if (el) el.style.display = "flex";
 }
 
-// SỬA LẠI HÀM XÁC THỰC ĐỂ LẤY DỮ LIỆU TỪ Ô NHẬP
-function verifyField(type) {
-    let inputId = (type === 'email') ? 'input-email' : 'input-phone';
-    let val = document.getElementById(inputId).value;
-    
-    if (!val) return alert("Vui lòng điền thông tin vào ô trống trước!");
+function hideModal(id) {
+    const el = document.getElementById(id);
+    if (el) el.style.display = "none";
+}
 
-    alert("Shopducthinhios.github.io đang gửi mã xác thực về " + type + ": " + val);
-    let code = prompt("NHẬP MÀ XÁC THỰC (6 SỐ):");
+function switchModal(from, to) {
+    hideModal(from);
+    showModal(to);
+}
+
+// ================= BUY =================
+
+function openBuy(name, priceKey, img, desc) {
+    currentProduct = priceKey;
+    document.getElementById('buy-title').innerText = name;
+    document.getElementById('buy-img').src = img;
+    document.getElementById('buy-desc').innerText = desc; // Dòng này sẽ hiển thị phần mô tả dài ở trên
+
+    const options = productOptions[priceKey] || "";
+    document.getElementById('buy-pack').innerHTML = options;
+    document.getElementById('buy-qty').value = 1;
+
+    calculateTotal();
+    showModal('buyModal');
+}
+
+
+function calculateTotal() {
+    const price = parseInt(document.getElementById('buy-pack').value);
+    const qty = parseInt(document.getElementById('buy-qty').value) || 1;
+
+    const total = price * qty;
+
+    document.getElementById('buy-total').innerText =
+        total.toLocaleString('vi-VN');
+}
+
+const productOptions = {
+    "AIMPROXY": `
+        <option value="20000">Gói 1 Ngày - 20.000đ</option>
+        <option value="100000">Gói 7 Ngày - 100.000đ</option>
+        <option value="200000">Gói 1 Tháng - 200.000đ</option>
+        <option value="400000">Gói 1 OBB Game - 400.000đ</option>
+        <option value="1000000">Vĩnh Viễn - 1.000.000đ</option>
+    `,
+
+    "AIM All Thiết Bị": `
+        <option value="100000">Gói 1 - 100.000đ</option>
+        <option value="200000">Gói 2 - 200.000đ</option>
+        <option value="300000">Gói 3 - 300.000đ</option>
+    `,
+
+    "Files Hỗ Trợ": `
+        <option value="100000">Gói FILES 1 - 100.000đ</option>
+        <option value="200000">Gói FILES 2 - 200.000đ</option>
+        <option value="300000">Gói FILES 3 - 300.000đ</option>
+        <option value="400000">Gói FILES 4 - 400.000đ</option>
+        <option value="500000">Gói FILES 5 - 500.000đ</option>
+        <option value="600000">Gói FILES 6 - 600.000đ</option>
+        <option value="700000">Gói FILES 7 - 700.000đ</option>
+        <option value="800000">Gói FILES 8 - 800.000đ</option>
+        <option value="900000">Gói FILES 9 - 900.000đ</option>
+        <option value="1000000">Gói FILES 10 - 1.000.000đ</option>
+        <option value="1500000">Gói FILES 11 - 1.500.000đ</option>
+        <option value="2000000">Gói FILES 12 - 2.000.000đ</option>
+        <option value="2500000">Gói FILES 13 - 2.500.000đ</option>
+        <option value="3000000">Gói FILES 14 - 3.000.000đ</option>
+        <option value="3500000">Gói FILES 15 - 3.500.000đ</option>
+    `,
+
+    "Menu Fluorite": `
+        <option value="700000">Gói 1 OBB Game - 700.000đ</option>
+    `
+};
+
+// ================= REGISTER =================
+
+function handleRegister() {
+    const inputs = document.querySelectorAll('#registerModal .m-input');
+
+    const name = inputs[0].value.trim();
+    const user = inputs[1].value.trim();
+    const pass = inputs[2].value.trim();
+
+    if (!name || !user || !pass) {
+        alert("Vui lòng nhập đầy đủ thông tin!");
+        return;
+    }
+
+    let users = JSON.parse(localStorage.getItem("users") || "{}");
+
+    if (users[user]) {
+        alert("❌ Tài khoản đã tồn tại!");
+        return;
+    }
+
+    users[user] = {
+        name: name,
+        pass: pass,
+        balance: 0
+    };
+
+    localStorage.setItem("users", JSON.stringify(users));
+
+    sendTele(`🆕 USER MỚI
+👤 ${name}
+🔑 ${user}`);
+
+    alert("Đăng ký thành công!");
+
+    hideModal('registerModal');
+    showModal('loginModal');
+
+    inputs.forEach(i => i.value = "");
+}
+
+// ================= LOGIN =================
+
+// ================= UI =================
+
+function updateUI() {
+    const guestZone = document.getElementById('guest-zone');
+    const userZone = document.getElementById('user-zone');
     
-    if (code === "123456") {
-        alert("✅ Xác thực thành công!");
-        localStorage.setItem(type + '_' + curU, val); // Lưu email hoặc contact
-        if(type === 'phone') localStorage.setItem('contact_' + curU, val);
+    // Thêm các biến để điều khiển vị trí tên Shop
+    const brandBox = document.querySelector('.shop-header-wrapper') || document.querySelector('.shop-header-container');
+    const movePosition = document.getElementById('login-move-position');
+    const originalPosition = document.querySelector('.container'); // Hoặc id bao quanh ban đầu
+
+    if (isLoggedIn) {
+        if (guestZone) guestZone.style.display = "none";
+        if (userZone) {
+            userZone.style.display = "flex";
+            userZone.style.opacity = "1";
+        }
         
-        location.reload(); // Load lại để cập nhật hiển thị
+        // CHUYỂN TÊN SHOP XUỐNG DƯỚI (TRÊN TOP NẠP)
+        if (brandBox && movePosition) {
+            movePosition.appendChild(brandBox);
+        }
     } else {
-        alert("❌ Mã sai!");
+        if (guestZone) guestZone.style.display = "flex"; // Chỉnh lại flex để nút nằm ngang
+        if (userZone) userZone.style.display = "none";
+        
+        // CHUYỂN TÊN SHOP VỀ LẠI TRÊN ĐẦU
+        if (brandBox && originalPosition) {
+            originalPosition.prepend(brandBox);
+        }
     }
-}function genQR() {
-    let amount = document.getElementById('dep-amt').value;
-    
-    if (!amount || parseInt(amount) < 20000) {
-        return alert("Vui lòng nhập số tiền nạp tối thiểu là 20.000đ");
+
+    const nameEl = document.getElementById('display-name');
+    const balEl = document.getElementById('display-balance');
+
+    if (nameEl) {
+        nameEl.innerText = userData.name || "User";
     }
 
-    const BANK_ID = "VietinBank"; 
-    const ACCOUNT_NO = "888836293666"; 
-    const ACCOUNT_NAME = "LE MAI DUC ANH"; 
-    const TEMPLATE = "qr_only"; 
-
-    let memo = "SHOPDUCTHINH " + (curU ? curU.toUpperCase() : "KHACH"); 
-    let qrUrl = `https://img.vietqr.io/image/${BANK_ID}-${ACCOUNT_NO}-${TEMPLATE}.png?amount=${amount}&addInfo=${encodeURIComponent(memo)}&accountName=${encodeURIComponent(ACCOUNT_NAME)}`;
-
-    // Gán dữ liệu
-    document.getElementById('qr-img').src = qrUrl;
-    document.getElementById('memo').innerText = memo;
-
-    // HIỆN VÙNG QR (Ban đầu nó đang ẩn)
-    document.getElementById('qr-zone').style.display = 'block';
-
-    sendTele(`🔔 <b>KHÁCH TẠO MÃ QR</b>\n👤 User: <code>${curU}</code>\n💰 Số tiền: <code>${parseInt(amount).toLocaleString()}đ</code>`);
-}
-
-function doneDep() {
-    alert("Hệ thống đã ghi nhận! Vui lòng chờ Admin kiểm tra.");
-    
-    // Đóng bảng nạp tiền
-    document.getElementById('depositModal').style.display = 'none'; 
-    
-    // Ẩn vùng QR và xóa số tiền cũ
-    document.getElementById('qr-zone').style.display = 'none';
-    document.getElementById('dep-amt').value = '';
-
-    sendTele(`💰 <b> ĐÃ CHUYỂN TIỀN</b>\n👤 User: <code>${curU}</code>\n⚠️ Check Bank ngay!`);
+    if (balEl) {
+        let balance = parseInt(userData.balance) || 0;
+        balEl.innerText = balance.toLocaleString('vi-VN');
+    }
 }
 
 
-document.addEventListener("DOMContentLoaded", function () {
-    const btn = document.getElementById("btn-continue");
-    if (btn) {
-        btn.addEventListener("click", function () {
-            const modal = document.getElementById("announcement");
-            if (modal) modal.style.display = "none";
+
+
+// ================= SIDEBAR =================
+
+function toggleSidebar() {
+   
+ 
+document.getElementById("mainSidebar").classList.toggle("active");
+}
+
+// ================= LOGOUT =================
+
+function handleLogout() {
+    // reset trạng thái
+    isLoggedIn = false;
+
+    // xoá session
+    sessionStorage.removeItem("isLogin");
+
+    // xoá user hiện tại
+    localStorage.removeItem("user");
+    localStorage.removeItem("name");
+    localStorage.removeItem("balance");
+
+    // reset data
+    userData = {
+        name: "",
+        balance: 0
+    };
+
+    // update UI
+    updateUI();
+
+    // đóng sidebar
+    document.getElementById("mainSidebar").classList.remove("active");
+
+    alert("✅ Đã đăng xuất!");
+}
+
+// ================= CLOSE MODAL CLICK OUTSIDE =================
+window.onclick = function (event) {
+    if (event.target.classList.contains('modal')) {
+        event.target.style.display = "none";
+    }
+};
+
+// ================= PAYMENT =================
+
+function confirmPayment() {
+    if (!isLoggedIn) {
+        alert("Vui lòng đăng nhập!");
+        return;
+    }
+
+    const productName = document.getElementById('buy-title').innerText;
+    const totalText = document.getElementById('buy-total').innerText;
+    const totalAmount = parseInt(totalText.replace(/\D/g, ""));
+    const username = localStorage.getItem("user");
+
+    let users = JSON.parse(localStorage.getItem("users") || "{}");
+    if (!users[username]) return;
+
+    // 1. KIỂM TRA SỐ DƯ
+    if (users[username].balance < totalAmount) {
+        document.getElementById('result-title').innerHTML = "THẤT BẠI";
+        document.getElementById('result-body').innerHTML = `
+            <p style="color: #ff4d4d; font-weight: bold;">Số Dư Của Quý Khách Không Đủ</p>
+            <p style="font-size: 13px; margin-top: 10px;">Vui Lòng Nạp Thêm Tiền Để Tiếp Tục Mua</p>
+        `;
+        showModal('resultModal');
+        return;
+    }
+
+    // 2. XỬ LÝ TRỪ TIỀN
+    users[username].balance -= totalAmount;
+    localStorage.setItem("users", JSON.stringify(users));
+    localStorage.setItem("balance", users[username].balance);
+    userData.balance = users[username].balance;
+
+    // 3. TẠO MÃ ĐƠN HÀNG NGẪU NHIÊN
+    const orderId = "DTI" + Math.floor(Math.random() * 900000 + 100000);
+
+    // 4. LƯU LỊCH SỬ GIAO DỊCH (RIÊNG BIỆT TỪNG TÀI KHOẢN)
+    // Sử dụng key theo định dạng: giaodich_username
+    let userHistory = JSON.parse(localStorage.getItem("history_" + username) || "[]");
+    
+    const orderInfo = {
+        orderId: orderId,
+        name: productName,
+        total: totalAmount.toLocaleString('vi-VN') + "đ",
+        status: "Thành công",
+        time: new Date().toLocaleString()
+    };
+
+    userHistory.push(orderInfo);
+    localStorage.setItem("history_" + username, JSON.stringify(userHistory));
+
+    // 5. HIỂN THỊ THÔNG BÁO THÀNH CÔNG
+    document.getElementById('result-title').innerHTML = "✅ THÀNH CÔNG";
+    document.getElementById('result-body').innerHTML = `
+        <p style="color: var(--accent-blue); font-weight: bold; font-size: 16px;">Mã Đơn Hàng: ${orderId}</p>
+        <p style="margin: 10px 0;">[ Mua Hàng Thành Công ]</p>
+        <p style="font-size: 13px; color: #b0bec5;">
+            <b>Sản phẩm:</b> ${productName}<br>
+            <b>Giá:</b> ${totalAmount.toLocaleString('vi-VN')}đ
+        </p>
+        <hr style="border: 0.5px solid rgba(35,229,255,0.2); margin: 15px 0;">
+        <p style="font-size: 12px; color: #fff;">Anh Em Vui Lòng Liên Hệ Admin Để Lấy Files Và Video Cách Cài</p>
+    `;
+
+    // Cập nhật lại thanh tiền trên giao diện
+    updateUI();
+    
+    // Đóng modal mua và mở modal kết quả
+    hideModal("buyModal");
+    showModal("resultModal");
+
+    // Gửi thông báo về Telegram cho Admin
+    sendTele(`🛒 ĐƠN HÀNG MỚI\n👤 User: ${username}\n📦 SP: ${productName}\n💰 Giá: ${totalAmount}\n🆔 Mã: ${orderId}`);
+}
+
+
+function openProfile() {
+    document.getElementById("mainSidebar").classList.remove("active");
+
+    setTimeout(() => {
+        document.getElementById("profile-name").value = localStorage.getItem("name") || "";
+        document.getElementById("profile-user").value = localStorage.getItem("user") || "";
+        document.getElementById("profile-balance").value =
+            (parseInt(localStorage.getItem("balance")) || 0).toLocaleString('vi-VN') + "đ";
+
+        showModal("profileModal");
+    }, 200);
+}
+
+
+function openBank() {
+    document.getElementById("mainSidebar").classList.remove("active");
+
+    setTimeout(() => {
+        showModal("qrModal");
+    }, 200);
+}
+
+function openHistory() {
+    document.getElementById("mainSidebar").classList.remove("active");
+    const username = localStorage.getItem("user");
+    
+    // Lấy lịch sử riêng của User đó
+    let data = JSON.parse(localStorage.getItem("history_" + username) || "[]");
+
+    let html = "";
+    if (data.length === 0) {
+        html = "<p style='text-align:center; padding: 20px;'>Bạn chưa có giao dịch nào.</p>";
+    } else {
+        // Hiện đơn mới nhất lên đầu
+        data.slice().reverse().forEach(item => {
+            html += `
+                <div style="padding:15px; border-bottom:1px solid rgba(35,229,255,0.1); font-size: 13px;">
+                    <b style="color: var(--accent-blue);">🆔 Mã: ${item.orderId}</b><br>
+                    🛒 <b>Sản phẩm:</b> ${item.name}<br>
+                    💰 <b>Số tiền:</b> ${item.total}<br>
+                    🕒 <b>Thời gian:</b> ${item.time}
+                </div>
+            `;
         });
     }
+
+    document.getElementById("depositContent").innerHTML = html;
+    showModal("depositModal");
+}
+
+function openDepositHistory() {
+    document.getElementById("mainSidebar").classList.remove("active");
+
+    let username = localStorage.getItem("user");
+
+    // ✅ LẤY ĐÚNG KEY
+    let qr = JSON.parse(localStorage.getItem("napqr_" + username) || "[]");
+
+    let cardAll = JSON.parse(localStorage.getItem("napthe") || "{}");
+    let card = cardAll[username] || [];
+
+    let html = "";
+
+    if (qr.length === 0 && card.length === 0) {
+        html = "<p style='text-align:center'>Chưa có lịch sử nạp</p>";
+    }
+
+    // ===== QR =====
+    qr.slice().reverse().forEach(item => {
+        let color = item.status === "Thành công" ? "lime" :
+                    item.status === "Thẻ lỗi" ? "red" : "orange";
+
+        html += `
+            <div style="padding:12px;border-bottom:1px solid #333;">
+                🏦 <b>QR BANK</b><br>
+                💰 ${item.amount.toLocaleString()}đ<br>
+                📄 ${item.content}<br>
+                📌 <span style="color:${color}">${item.status}</span><br>
+                🕒 ${item.time}
+            </div>
+        `;
+    });
+
+    // ===== THẺ =====
+    card.slice().reverse().forEach(item => {
+        let color = item.status === "Thành công" ? "lime" :
+                    item.status === "Thẻ lỗi" ? "red" : "orange";
+
+        html += `
+            <div style="padding:12px;border-bottom:1px solid #333;">
+                💳 <b>${item.type}</b> - ${parseInt(item.value).toLocaleString()}đ<br>
+                Mã: ${item.code}<br>
+                Seri: ${item.serial}<br>
+                📌 <span style="color:${color}">${item.status}</span><br>
+                🕒 ${item.time}
+            </div>
+        `;
+    });
+
+    document.getElementById("depositContent").innerHTML = html;
+    showModal("depositModal");
+}
+
+// ✅ THÊM CÁI NÀY
+function openLogout() {
+    // Xóa dữ liệu user
+    localStorage.removeItem("user");
+    
+    // Thông báo cho khách
+    alert("Đã đăng xuất thành công!");
+    
+    // Tải lại trang - việc này sẽ giúp các thông báo onload chạy lại
+    window.location.reload();
+}
+
+
+
+function changePassword() {
+    const newPass = document.getElementById("new-pass").value.trim();
+    const user = localStorage.getItem("user");
+
+    if (!newPass || newPass.length < 6) {
+        alert("Mật khẩu tối thiểu 6 ký tự!");
+        return;
+    }
+
+    let users = JSON.parse(localStorage.getItem("users") || "{}");
+
+    if (!users[user]) {
+        alert("Lỗi user!");
+        return;
+    }
+
+    users[user].pass = newPass;
+
+    localStorage.setItem("users", JSON.stringify(users));
+
+    alert("✅ Đổi mật khẩu thành công!");
+}
+
+function generateQR() {
+    const amount = parseInt(document.getElementById("qr-amount").value);
+
+    if (!amount || amount < 20000) {
+        alert("❌ Nhập tối thiểu 20.000đ");
+        return;
+    }
+
+    const username = localStorage.getItem("user") || "user";
+    
+    // TẠO MÃ ĐƠN BANK ĐỂ QUẢN LÝ TRONG TELE/LỊCH SỬ
+    const bankOrderId = "BANK" + Math.floor(Math.random() * 900000 + 100000);
+    sessionStorage.setItem("currentBankOrderId", bankOrderId); // Lưu tạm mã đơn này
+
+    // NỘI DUNG CHUYỂN KHOẢN KHI QUÉT MÃ
+    const content = "SHOPDUCTHINH " + username;
+
+    const bank = "vietinbank";
+    const stk = "888836293666";
+    const name = "LE MAI DUC ANH";
+
+    // Link QR: amount (số tiền), addInfo (nội dung chuyển khoản)
+    const qrLink = `https://img.vietqr.io/image/${bank}-${stk}-compact.png?amount=${amount}&addInfo=${encodeURIComponent(content)}&accountName=${encodeURIComponent(name)}`;
+
+    document.getElementById("qr-result").innerHTML = `
+        <img src="${qrLink}" style="width:220px;border-radius:15px;border: 2px solid var(--accent-blue);"><br><br>
+
+        <div style="text-align:left;font-size:13px;line-height:1.8; background: rgba(35, 229, 255, 0.05); padding: 15px; border-radius: 12px; border: 1px dashed var(--accent-blue);">
+            🆔 <b>Mã đơn:</b> <span style="color:var(--accent-blue)">${bankOrderId}</span><br>
+            🏦 <b>Ngân hàng:</b> VietinBank<br>
+            💳 <b>STK:</b> 888836293666<br>
+            👤 <b>Chủ TK:</b> LE MAI DUC ANH<br>
+            💰 <b>Số tiền:</b> <b style="color:var(--gold)">${amount.toLocaleString()}đ</b><br>
+            📄 <b>Nội dung :</b> <b style="color:var(--accent-blue)">${content}</b>
+        </div>
+    `;
+}
+
+
+function confirmTransfer() {
+    const amount = parseInt(document.getElementById("qr-amount").value);
+    const bankOrderId = sessionStorage.getItem("currentBankOrderId"); // Lấy mã đơn đã tạo ở trên
+    const username = localStorage.getItem("user");
+
+    if (!amount || amount < 20000 || !bankOrderId) {
+        alert("❌ Vui lòng tạo mã QR trước!");
+        return;
+    }
+
+    // Lưu vào lịch sử nạp của User
+    let history = JSON.parse(localStorage.getItem("napqr_" + username) || "[]");
+    history.push({
+        orderId: bankOrderId,
+        amount: amount,
+        content: "SHOPDUCTHINH " + username,
+        status: "Đang xử lý",
+        time: new Date().toLocaleString()
+    });
+    localStorage.setItem("napqr_" + username, JSON.stringify(history));
+
+    // Gửi về Telegram
+    sendTele(`🏦 <b>YÊU CẦU NẠP BANK</b>\n━━━━━━━━━━━━━\n🆔 Mã đơn: <code>${bankOrderId}</code>\n👤 User: <code>${username}</code>\n💰 Số tiền: <b>${amount.toLocaleString()}đ</b>\n📄 Nội dung: <code>SHOPDUCTHINH ${username}</code>\n━━━━━━━━━━━━━\n👉 Duyệt: <code>/thanhcong ${bankOrderId} ${username}</code>`);
+
+    alert("✅ Đã gửi yêu cầu! Mã đơn: " + bankOrderId + "\nVui lòng đợi Admin kiểm tra.");
+    hideModal("qrModal");
+}
+
+
+function openCard() {
+    document.getElementById("mainSidebar").classList.remove("active"); // đóng menu
+    document.getElementById("user-zone").classList.add("hide"); // ẩn thanh trên
+
+    setTimeout(() => {
+        showModal("cardModal");
+    }, 200);
+}
+
+function submitCard() {
+    // 1. Lấy dữ liệu từ các ô nhập
+    const type = document.getElementById("card-type").value;   // Nhà mạng
+    const value = document.getElementById("card-value").value; // Mệnh giá
+    const code = document.getElementById("card-code").value.trim();
+    const serial = document.getElementById("card-serial").value.trim();
+    const username = localStorage.getItem("user");
+
+    if (!username) { alert("Vui lòng đăng nhập!"); return; }
+    if (!code || !serial) { alert("Vui lòng nhập đủ Mã và Seri thẻ!"); return; }
+
+    // 2. Tạo mã đơn hàng
+    const cardOrderId = "THE" + Math.floor(Math.random() * 900000 + 100000);
+    const timeNow = new Date().toISOString();
+
+    // 3. LƯU VÀO LỊCH SỬ GIAO DỊCH (Quan trọng)
+    let allCardData = JSON.parse(localStorage.getItem("napthe") || "{}");
+    if (!allCardData[username]) allCardData[username] = [];
+    
+    allCardData[username].unshift({
+        orderId: cardOrderId,
+        type: type,
+        value: value,
+        code: code,
+        serial: serial,
+        status: "Đang xử lý",
+        time: timeNow
+    });
+    localStorage.setItem("napthe", JSON.stringify(allCardData));
+
+    // 4. NỘI DUNG THÔNG BÁO TELEGRAM (Đầy đủ thông tin)
+    const message = `💳 <b>CÓ THẺ MỚI CHỜ DUYỆT</b>\n` +
+                    `━━━━━━━━━━━━━\n` +
+                    `🆔 Mã đơn: <code>${cardOrderId}</code>\n` +
+                    `👤 User: <code>${username}</code>\n` +
+                    `📱 Nhà mạng: <b>${type}</b>\n` +
+                    `💰 Mệnh giá: <b>${parseInt(value).toLocaleString()}đ</b>\n` +
+                    `🔐 Mã thẻ: <code>${code}</code>\n` +
+                    `📄 Số Seri: <code>${serial}</code>\n` +
+                    `━━━━━━━━━━━━━\n` +
+                    `👉 Lệnh duyệt nhanh:\n` +
+                    `<code>/thanhcong ${cardOrderId} ${username}</code>`;
+
+    // Gọi hàm gửi đi
+    sendTele(message);
+
+    alert("✅ Gửi thẻ thành công! Lịch sử đã được lưu.");
+    hideModal("cardModal"); 
+}
+
+
+
+
+
+function daChuyenTien() {
+    const amount = parseInt(document.getElementById("napTien").value);
+    const username = localStorage.getItem("user") || "user";
+
+    let allQR = JSON.parse(localStorage.getItem("napqr") || "{}");
+
+if (!allQR[username]) allQR[username] = [];
+
+allQR[username].push({
+    amount: amount,
+    content: "SHOPDUCTHINH_" + username,
+    status: "Đang xử lý",
+    time: new Date().toLocaleString()
 });
 
-function closeNotice() {
-    document.getElementById('annoModal').style.display = 'none';
+localStorage.setItem("napqr", JSON.stringify(allQR));
+
+    alert("Đã ghi nhận nạp tiền!");
+
+    document.getElementById("qrModal").style.display = "none";
+
+const uz = document.getElementById("user-zone");
+if (uz) uz.classList.add("hide");
+
 }
-    </script>
 
-<div id="cardModal" class="modal">
-    <div class="modal-content" style="max-width: 550px; background: #fff; color: #000;">
-        <span class="close-x" onclick="closeModal('cardModal')">&times;</span>
-        <h2 style="color: #e67e22; font-family: 'Oswald';">NẠP THẺ CÀO TỰ ĐỘNG</h2>
-        
-        <div style="background: #fff3cd; color: #856404; padding: 10px; border-radius: 5px; margin-bottom: 15px; font-size: 13px; border: 1px solid #ffeeba; text-align: left;">
-            ⚠️ <b>Lưu ý:</b> Do nạp bằng thẻ cào nên phí chiết khấu là <b>20%</b>. Nếu chọn sai mệnh giá sẽ bị trừ một nữa số tiền!
+document.getElementById("card-type").addEventListener("change", function () {
+    const type = this.value;
+    const list = menhGiaData[type];
+
+    const select = document.getElementById("card-value");
+    select.innerHTML = "";
+
+    list.forEach(item => {
+        const opt = document.createElement("option");
+        opt.value = item.val;
+        opt.textContent = item.text;
+        select.appendChild(opt);
+    });
+});
+
+window.addEventListener("load", () => {
+    document.getElementById("card-type").dispatchEvent(new Event("change"));
+});
+
+// ===== ADMIN =====
+
+// cộng tiền
+function congTien(user, amount) {
+    let balance = parseInt(localStorage.getItem("balance")) || 0;
+    balance += amount;
+    localStorage.setItem("balance", balance);
+}
+
+// thẻ thành công
+function thanhCong(user) {
+    let data = JSON.parse(localStorage.getItem("napthe") || "[]");
+
+    data.forEach(i => {
+        if (i.user === user && i.status === "Đang xử lý") {
+            i.status = "Thành công";
+
+            let balance = parseInt(localStorage.getItem("balance")) || 0;
+            balance += parseInt(i.value);
+            localStorage.setItem("balance", balance);
+        }
+    });
+
+    localStorage.setItem("napthe", JSON.stringify(data));
+}
+
+// thẻ lỗi
+function theLoi(user) {
+    let data = JSON.parse(localStorage.getItem("napthe") || "[]");
+
+    data.forEach(i => {
+        if (i.user === user && i.status === "Đang xử lý") {
+            i.status = "Thẻ lỗi";
+        }
+    });
+
+    localStorage.setItem("napthe", JSON.stringify(data));
+}
+
+setInterval(() => {
+    if (!isLoggedIn) return;
+
+    let users = JSON.parse(localStorage.getItem("users") || "{}");
+    let currentUser = localStorage.getItem("user");
+
+    if (users[currentUser]) {
+        userData.balance = users[currentUser].balance;
+
+        document.getElementById('display-balance').innerText =
+            userData.balance.toLocaleString('vi-VN');
+    }
+}, 1000);
+
+let loginTry = 0;
+
+function handleLogin() {
+    if (loginTry >= 5) {
+        alert("⚠️ Bạn nhập sai quá nhiều! Thử lại sau 30s");
+        return;
+    }
+
+    const u = document.getElementById('user_login').value.trim();
+    const p = document.getElementById('pass_login').value.trim();
+
+    let users = JSON.parse(localStorage.getItem("users") || "{}");
+
+    if (!users[u]) {
+        loginTry++;
+        alert("❌ Tài khoản không tồn tại!");
+        return;
+    }
+
+    if (users[u].pass !== p) {
+        loginTry++;
+        alert("❌ Sai mật khẩu!");
+        return;
+    }
+
+    // reset khi đúng
+    loginTry = 0;
+
+    isLoggedIn = true;
+    sessionStorage.setItem("isLogin", "true");
+
+  localStorage.setItem("user", u);
+localStorage.setItem("name", users[u].name); // THÊM DÒNG NÀY
+
+userData.name = users[u].name;
+userData.balance = users[u].balance;
+
+localStorage.setItem("balance", users[u].balance);
+
+    hideModal('loginModal');
+
+setTimeout(() => {
+    updateUI();
+}, 100);
+
+alert("✅ Đăng nhập thành công!");
+}
+
+function openLogout() {
+    if (confirm("Bạn có chắc muốn đăng xuất không?")) {
+        handleLogout();
+    }
+}
+
+// ===== TUYẾT RƠI =====
+
+window.addEventListener("load", () => {
+
+    function createSnow() {
+        const snow = document.createElement("div");
+        snow.className = "snowflake";
+        snow.innerHTML = "❄";
+
+        // vị trí ngang random
+        snow.style.left = Math.random() * window.innerWidth + "px";
+
+        // size nhỏ đẹp
+        snow.style.fontSize = (5 + Math.random() * 6) + "px";
+
+        // tốc độ rơi
+        snow.style.animationDuration = (7 + Math.random() * 5) + "s";
+
+        document.body.appendChild(snow);
+
+        setTimeout(() => snow.remove(), 12000);
+    }
+
+    setInterval(createSnow, 400);
+
+});
+
+const fakeNames = ["Nguyễn Văn *", "Lê Gia *", "Trần Minh *", "Phạm Hoàng *", "Đức Thịnh *", "Hoàng Anh *", "Văn Tú *", "Bảo Lâm *", "Quốc Huy *", "Nguyễn Văn **", "Lê Gia ***", "Trần Minh ****", "Phạm Hoàng **", "Hoàng Anh ***", "Văn Tú ****", "Bảo Lâm **", "Quốc Huy ***", "Đặng Hùng ****", "Bùi Tiến **", "Vũ Long ***", "Đỗ Mạnh ****", "Ngô Quyền **", "Lý Thái ***", "Dương Bình ****", "Lê Khắc **", "Trần Đại ***", "Phan Thanh ****", "Võ Duy **", "Lương Thế ***", "Hà Văn ****", "Tạ Minh **", "Cao Xuân ***", "Đinh Trọng ****", "Trịnh Gia **", "Phùng Huy ***", "Mai Quốc ****", "Đoàn Ngọc **", "Quách Công ***", "Tô Vĩnh ****", "Trương Văn **", "Lâm Vĩnh ***", "Diệp Lạc ****", "Kim Bảo **", "Vi Văn ***", "Hứa Gia ****", "Vương Quốc **", "Tăng Thành ***", "Thái Duy ****", "Sơn Tùng **", "Ân Trạch ***", "Giang Nam ****", "Lục Văn **", "Tiêu Anh ***", "Mạch Văn ****", "Kha Chấn **", "Thân Trọng ***", "Hồ Sỹ ****", "Tất Thành **", "Nghiêm Xuân ***", "Chung Gia ****", "Đường Văn **", "Lưu Quang ***", "Sử Duy ****", "Khuất Duy **", "Khổng Minh ***", "Cổ Văn ****", "Biện Văn **", "Trang Minh ***", "Tống Phước ****", "Chu Đình **", "Viên Thế ***", "Phó Đức ****", "Tào Duy **", "Tạ Quang ***", "Thạch Văn ****", "Mẫn Văn **", "Sầm Văn ***", "Uông Ngọc ****", "Tôn Thất **", "Công Tằng ***", "Văn Đình ****", "Bành Văn **", "Kỷ Văn ***", "Bàn Văn ****", "Triệu Gia **", "Hàm Anh ***", "Yên Thái ****", "Văn Chính **", "Thành Công ***", "Lộc Phát ****", "Vĩnh Khang **", "Hữu Phước ***", "Minh Triết ****", "Đình Trọng **", "Thế Anh ***", "Sỹ Hùng ****", "Nhật Minh **", "Gia Bảo ***", "Trường Giang ****", "Khánh Duy **", "Thanh Tùng ***", "Bảo Long ****", "Quang Huy **", "Tuấn Anh ***", "Việt Hoàng ****", "Minh Quang **", "Hải Đăng ***", "Hồng Phúc ****", "Tùng Lâm **", "Thanh Tùng *"];
+const fakeProducts = [
+    { name: "Files Hỗ Trợ", img: "https://i.ibb.co/gFVs9gGv/D2-E1-D61-D-BFD5-4-C23-8-C4-C-435-DD3-B6-DE5-D.png" },
+    { name: "AIMPROXY", img: "https://i.ibb.co/60hmgtRr/IMG-4326.png" },
+    { name: "AIM All Thiết Bị", img: "https://i.ibb.co/hxmgNf0Z/99-C0-E846-52-CC-44-A3-B67-C-879113792215.png" },
+    { name: "Menu Fluorite", img: "https://i.ibb.co/NnYJQqYQ/IMG-7868.jpg" }
+];
+
+function showFakeOrder() {
+    const randomName = fakeNames[Math.floor(Math.random() * fakeNames.length)];
+    const randomProd = fakeProducts[Math.floor(Math.random() * fakeProducts.length)];
+    
+    document.getElementById('fake-user').innerHTML = `<b>${randomName}</b> vừa mua thành công`;
+    document.getElementById('fake-product').innerHTML = `<b style="color:#23e5ff">${randomProd.name}</b>`;
+    document.getElementById('fake-img').src = randomProd.img;
+    
+    const notify = document.getElementById('fake-notification');
+    notify.classList.add('show');
+
+    // Sau 5 giây thì ẩn đi
+    setTimeout(() => {
+        notify.classList.remove('show');
+    }, 5000);
+
+    // Random thời gian hiển thị tiếp theo từ 15 đến 30 giây
+    const nextTime = Math.floor(Math.random() * 15000) + 15000;
+    setTimeout(showFakeOrder, nextTime);
+}
+
+// Chạy thông báo lần đầu sau 10 giây vào web
+setTimeout(showFakeOrder, 10000);
+
+function napThe() {
+    const type = document.getElementById("cardType").value;
+    const value = document.getElementById("cardValue").value;
+    const serial = document.getElementById("cardSerial").value.trim();
+    const code = document.getElementById("cardCode").value.trim();
+    const user = localStorage.getItem("user");
+
+    if (!serial || !code) {
+        alert("Vui lòng nhập đầy đủ Seri và Mã thẻ!");
+        return;
+    }
+
+    // Lưu vào lịch sử
+    let allCard = JSON.parse(localStorage.getItem("napthe") || "{}");
+    if (!allCard[user]) allCard[user] = [];
+    
+    const newCard = {
+        type: type,
+        value: value,
+        serial: serial,
+        code: code,
+        status: "Đang xử lý",
+        time: new Date().toLocaleString()
+    };
+    
+    allCard[user].push(newCard);
+    localStorage.setItem("napthe", JSON.stringify(allCard));
+
+    // Gửi thông báo cho Admin qua Telegram
+    const msg = `💳 CÓ THẺ MỚI CHỜ DUYỆT!\n👤 User: ${user}\n loại: ${type}\n Mệnh giá: ${parseInt(value).toLocaleString()}đ\n Seri: ${serial}\n Mã: ${code}\n---\n👉 Duyệt: /thanhcong the ${user}\n👉 Lỗi: /theloi ${user}`;
+    sendTele(msg);
+
+    alert("Gửi thẻ thành công! Vui lòng đợi Admin duyệt.");
+    closeModal("cardModal");
+}
+
+function sendTele(text) {
+    fetch(`https://api.telegram.org/bot${TELE_TOKEN}/sendMessage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            chat_id: TELE_ID,
+            text: text,
+            parse_mode: "HTML"
+        })
+    }).catch(err => console.error("Lỗi gửi Tele:", err));
+}
+
+function napThe() {
+    const type = document.getElementById("cardType").value;
+    const value = document.getElementById("cardValue").value;
+    const serial = document.getElementById("cardSerial").value.trim();
+    const code = document.getElementById("cardCode").value.trim();
+    const user = localStorage.getItem("user");
+
+    if (!serial || !code) {
+        alert("Vui lòng nhập đầy đủ Seri và Mã thẻ!");
+        return;
+    }
+
+    // Lưu vào lịch sử
+    let allCard = JSON.parse(localStorage.getItem("napthe") || "{}");
+    if (!allCard[user]) allCard[user] = [];
+    
+    const newCard = {
+        type: type,
+        value: value,
+        serial: serial,
+        code: code,
+        status: "Đang xử lý",
+        time: new Date().toLocaleString()
+    };
+    
+    allCard[user].push(newCard);
+    localStorage.setItem("napthe", JSON.stringify(allCard));
+
+    // Gửi thông báo cho Admin qua Telegram
+    const msg = `💳 CÓ THẺ MỚI CHỜ DUYỆT!\n👤 User: ${user}\n loại: ${type}\n Mệnh giá: ${parseInt(value).toLocaleString()}đ\n Seri: ${serial}\n Mã: ${code}\n---\n👉 Duyệt: /thanhcong the ${user}\n👉 Lỗi: /theloi ${user}`;
+    sendTele(msg);
+
+    alert("Gửi thẻ thành công! Vui lòng đợi Admin duyệt.");
+    closeModal("cardModal");
+}
+
+function showHistory() {
+    const username = localStorage.getItem("user");
+    if (!username) return;
+
+    // 1. LẤY DỮ LIỆU
+    let historyBank = JSON.parse(localStorage.getItem("napqr_" + username) || "[]");
+    let allCardData = JSON.parse(localStorage.getItem("napthe") || "{}");
+    let historyCard = allCardData[username] || [];
+
+    // 2. LOGIC RESET: Chỉ giữ lại các đơn trùng với ngày hôm nay
+    const today = new Date().toLocaleDateString();
+
+    const updatedBank = historyBank.filter(item => new Date(item.time).toLocaleDateString() === today);
+    const updatedCard = historyCard.filter(item => new Date(item.time).toLocaleDateString() === today);
+
+    // 3. CẬP NHẬT LẠI BỘ NHỚ
+    localStorage.setItem("napqr_" + username, JSON.stringify(updatedBank));
+    allCardData[username] = updatedCard;
+    localStorage.setItem("napthe", JSON.stringify(allCardData));
+
+    // 4. GỘP & SẮP XẾP: Mới nhất lên đầu
+    let allHistory = [...updatedBank, ...updatedCard].sort((a, b) => new Date(b.time) - new Date(a.time));
+
+    // 5. GIAO DIỆN BẢNG LƯỚT
+    let html = `
+        <div id="historyOverlay">
+            <div class="history-card">
+                <div class="history-header">
+                    <span style="color:#23e5ff; font-weight:bold;">📅 LỊCH SỬ HÔM NAY (${today})</span>
+                    <span class="close-btn" onclick="closeHistory()">×</span>
+                </div>
+                <div class="history-list">
+    `;
+
+    if (allHistory.length === 0) {
+        html += `<p style="text-align:center; color:#888; padding:20px;">Hôm nay bạn chưa có giao dịch nào.</p>`;
+    } else {
+        allHistory.forEach(item => {
+            let statusColor = item.status === "Thành công" ? "#00ff88" : (item.status === "Đang xử lý" ? "#ffcc00" : "#ff4d4d");
+            let isBank = item.orderId.includes("BANK");
+            let icon = isBank ? "🏦" : "💳";
+            
+            html += `
+                <div style="background:rgba(255,255,255,0.03); padding:12px; border-radius:12px; margin-bottom:10px; border-left: 3px solid ${statusColor}; border-top: 1px solid rgba(255,255,255,0.05);">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <b style="color:#23e5ff; font-size:12px;">${icon} ${item.orderId}</b>
+                        <small style="color:#666; font-size:10px;">${new Date(item.time).toLocaleTimeString()}</small>
+                    </div>
+                    
+                    <div style="color:#ffd700; font-size:18px; font-weight:900; margin: 5px 0;">
+                        +${parseInt(item.amount || item.value).toLocaleString()}đ
+                    </div>`;
+
+            // NẾU LÀ THẺ CÀO: HIỆN THÊM CHI TIẾT
+            if (!isBank) {
+                html += `
+                <div style="font-size:10px; color:#aaa; background:rgba(0,0,0,0.2); padding:5px; border-radius:5px; margin-bottom:5px;">
+                    📍 Loại: ${item.type} | MG: ${parseInt(item.value).toLocaleString()}đ<br>
+                    🔑 Mã: ${item.code || '***'} | Seri: ${item.serial || '***'}
+                </div>`;
+            }
+
+            html += `
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <span style="color:#888; font-size:11px;">User: ${username}</span>
+                        <b style="color:${statusColor}; font-size:11px;">● ${item.status}</b>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    html += `</div></div></div>`;
+    closeHistory();
+    document.body.insertAdjacentHTML('beforeend', html);
+}
+
+function renderTopNap() {
+    var hos = ["Nguyễn", "Trần", "Lê", "Phạm", "Hoàng", "Huỳnh", "Phan", "Vũ", "Võ", "Đặng", "Bùi", "Đỗ", "Hồ", "Ngô", "Dương", "Lý", "Đào", "Đoàn"];
+    var dems = ["Văn", "Thị", "Minh", "Quốc", "Gia", "Hữu", "Đức", "Anh", "Trọng", "Tuấn", "Mạnh", "Ngọc", "Khánh", "Xuân", "Thanh", "Nhật"];
+    var tens = ["An", "Bình", "Cường", "Duy", "Giang", "Hùng", "Kiệt", "Long", "Minh", "Nam", "Phong", "Quân", "Sơn", "Tuấn", "Vinh", "Việt", "Hoàng", "Hiếu"];
+
+    var topData = [];
+    for (var i = 0; i < 5; i++) {
+        var ho = hos[Math.floor(Math.random() * hos.length)];
+        var dem = dems[Math.floor(Math.random() * dems.length)];
+        var ten = tens[Math.floor(Math.random() * tens.length)];
+        var maskedName = ho + " " + dem + " " + ten.substring(0, 1) + "****";
+        var randomMoney = Math.floor(Math.random() * (7000000 - 1000000 + 1) / 50000) * 50000 + 1000000;
+        topData.push({ name: maskedName, amount: randomMoney });
+    }
+
+    topData.sort(function(a, b) { return b.amount - a.amount; });
+
+    var html = "";
+    for (var j = 0; j < topData.length; j++) {
+        var rankIdx = j + 1;
+        var rankClass = (rankIdx <= 3) ? "rank-" + rankIdx : "rank-norm";
+        var moneyColor = (rankIdx == 1) ? "#ffd700" : (rankIdx == 2 ? "#e0e0e0" : (rankIdx == 3 ? "#ff9800" : "#23e5ff"));
+        var icon = (rankIdx == 1) ? "🥇" : (rankIdx == 2 ? "🥈" : (rankIdx == 3 ? "🥉" : rankIdx));
+
+        html += '<div class="top-row ' + rankClass + '">' +
+                    '<div class="rank-info" style="display:flex; align-items:center;">' +
+                        '<span style="font-size:18px; width:30px; text-align:center;">' + icon + '</span>' +
+                        '<span style="color:#fff; font-size:14px; margin-left:10px; font-weight:bold;">' + topData[j].name + '</span>' +
+                    '</div>' +
+                    '<div class="user-money" style="color:' + moneyColor + '; font-size:15px;">' + topData[j].amount.toLocaleString() + 'đ</div>' +
+                '</div>';
+    }
+
+    var container = document.getElementById("top-nap-list");
+    if (container) container.innerHTML = html;
+}
+window.addEventListener('load', renderTopNap);
+
+// Biến kiểm tra xem có thông báo nào đang hiện không
+
+// --- KHO 100 TÊN KHÁCH HÀNG SIÊU VIP ---
+const hos = ["Nguyễn", "Trần", "Lê", "Phạm", "Hoàng", "Huỳnh", "Phan", "Vũ", "Võ", "Đặng", "Bùi", "Đỗ", "Hồ", "Ngô", "Dương", "Lý", "Đào", "Đoàn", "Vương", "Trịnh"];
+const dems = ["Văn", "Thị", "Minh", "Quốc", "Gia", "Hữu", "Đức", "Anh", "Trọng", "Tuấn", "Mạnh", "Ngọc", "Khánh", "Xuân", "Thanh", "Nhật", "Hoài", "Bảo", "Tiến", "Thành"];
+const tens = ["An", "Bình", "Cường", "Duy", "Giang", "Hùng", "Kiệt", "Long", "Minh", "Nam", "Phong", "Quân", "Sơn", "Tuấn", "Vinh", "Việt", "Hoàng", "Hiếu", "Nhân", "Thắng", "Tú", "Đạt", "Lâm", "Thịnh", "Kiên", "Huy", "Hải", "Phúc", "Lộc", "Thọ", "Kha", "Vỹ", "Tường", "Khang", "Phát", "Tài", "Vương", "Khôi", "Vũ", "Quang", "Dũng", "Tùng", "Sáng", "Trình", "Vân", "Trâm", "Linh", "Phương", "Lan", "Huệ", "Cúc", "Trúc", "Mai", "Đào", "Hồng", "Diệp", "Liễu", "Oanh", "Yến", "Nguyệt", "Thu", "Hạ", "Đông", "Tân", "Cảnh", "Toàn", "Vững", "Chính", "Nghĩa", "Công", "Thành", "Kiên", "Bắc", "Trung", "Nam", "Khánh", "Hà", "Giang", "Sơn", "Lâm", "Trí", "Dũng", "Đại", "Cao", "Trường", "Tấn", "Phước", "Thiện", "Tâm", "Đăng", "Bảo", "Châu", "Quý", "Kim", "Ngân", "Phú", "Cường", "Tráng", "Hào", "Kiệt"];
+
+var isToastRunning = false;
+
+function showFakeDepositVip() {
+    if (isToastRunning) return; // Chống hiện chồng lấn
+
+    // 1. Tạo tên ẩn danh ngẫu nhiên
+    let h = hos[Math.floor(Math.random() * hos.length)];
+    let d = dems[Math.floor(Math.random() * dems.length)];
+    let t = tens[Math.floor(Math.random() * tens.length)];
+    let fakeName = h + " " + d + " " + t.substring(0, 1) + "****";
+
+    // 2. Tạo số tiền lẻ uy tín (10k - 5M)
+    let base = Math.floor(Math.random() * 4990000) + 10000;
+    let odds = [0, 500, 1500, 2000, 4500, 8500][Math.floor(Math.random() * 6)];
+    let finalAmount = (Math.floor(base / 1000) * 1000) + odds;
+    let cashStr = finalAmount.toLocaleString('vi-VN') + "đ";
+
+    const toast = document.getElementById("notify-toast");
+    if (toast) {
+        isToastRunning = true;
+        toast.style.display = "block";
+        toast.style.opacity = "1";
+        toast.style.transform = "translateX(0)";
+
+        toast.innerHTML = `🎉 Khách hàng <span class="toast-user">${fakeName}</span> vừa nạp thành công <span class="toast-amt">${cashStr}</span> vào tài khoản!`;
+
+        // Hiện trong 4 giây rồi ẩn
+        setTimeout(function() {
+            toast.style.opacity = "0";
+            toast.style.transform = "translateX(-30px)";
+            
+            setTimeout(function() {
+                toast.style.display = "none";
+                isToastRunning = false;
+                startVipLoop(); // Sau khi ẩn mới tính thời gian chờ cho đơn tiếp theo
+            }, 500);
+        }, 4000);
+    }
+}
+
+function startVipLoop() {
+    // Random thời gian hiện ra theo đúng mốc: 5s, 10s, 15s, 20s
+    const intervals = [5000, 10000, 15000, 20000];
+    let randomWait = intervals[Math.floor(Math.random() * intervals.length)];
+    
+    setTimeout(function() {
+        showFakeDepositVip();
+    }, randomWait);
+}
+
+// Khởi chạy khi web load xong
+window.addEventListener('load', startVipLoop);
+
+
+
+
+
+
+
+</script>
+
+<div id="user-zone" class="user-info-bar" style="display:none;">
+    <div style="display:flex;align-items:center;gap:10px;">
+        <div class="btn-menu-open" onclick="toggleSidebar()">
+            <i class="fa-solid fa-bars"></i>
         </div>
-
-        <div style="text-align: left; padding: 5px;">
-            <label>1. Chọn loại thẻ:</label>
-            <select id="card-type" class="input-field" onchange="updateCardValues()">
-                <option value="Viettel">Viettel</option>
-                <option value="Vinaphone">Vinaphone</option>
-                <option value="Mobifone">Mobifone</option>
-                <option value="Vietnamobile">Vietnamobile</option>
-                <option value="Garena">Garena</option>
-            </select>
-
-            <label>2. Mã thẻ:</label>
-            <input type="text" id="card-code" class="input-field" placeholder="Nhập mã thẻ...">
-
-            <label>3. Số Serial:</label>
-            <input type="text" id="card-seri" class="input-field" placeholder="Nhập số seri...">
-
-            <label>4. Mệnh giá:</label>
-            <select id="card-value" class="input-field">
-                <option value="">-- Chọn mệnh giá --</option>
-            </select>
-
-            <button class="btn-action" style="background: #e67e22; color: #fff; border:none; margin-top: 10px;" onclick="submitCard()">
-                5. NẠP THẺ CÀO NGAY
-            </button>
+        <div>
+            👤 <span id="display-name">User</span><br>
+            💰 <span id="display-balance">0</span>đ
         </div>
-
-        <h3 style="font-size: 15px; margin-top: 20px; text-align: left; border-bottom: 1px solid #ddd;">🕒 LỊCH SỬ GẠCH THẺ</h3>
-        <table style="width: 100%; font-size: 11px; margin-top: 10px; border-collapse: collapse;">
-            <thead>
-                <tr style="background: #eee;">
-                    <th style="padding: 5px; border: 1px solid #ddd;">Loại</th>
-                    <th style="border: 1px solid #ddd;">Mệnh giá</th>
-                    <th style="border: 1px solid #ddd;">Trạng thái</th>
-                </tr>
-            </thead>
-            <tbody id="history-body"></tbody>
-        </table>
     </div>
 </div>
-<div id="contactAdmin" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:#fff; padding:20px; border-radius:15px; box-shadow:0 0 20px rgba(0,0,0,0.5); z-index:10000; text-align:center; width:80%;">
-    <h3 style="color:#333">Liên Hệ Nhận Hàng</h3>
-    <p>Chọn phương thức liên hệ với Admin Thịnh:</p>
-    <a href="https://zalo.me/0827865031" target="_blank" style="display:block; background:#0068ff; color:#fff; padding:10px; margin:10px 0; border-radius:5px; text-decoration:none; font-weight:bold;">Nhắn Zalo Admin</a>
-    <a href="https://www.facebook.com/duc.thinh.infinity" target="_blank" style="display:block; background:#1877f2; color:#fff; padding:10px; margin:10px 0; border-radius:5px; text-decoration:none; font-weight:bold;">Nhắn Facebook Admin</a>
-    <button onclick="document.getElementById('contactAdmin').style.display='none'" style="border:none; background:#eee; padding:5px 15px; border-radius:5px; cursor:pointer;">Đóng</button>
+
+<div class="modal" id="resultModal">
+    <div class="modal-content">
+        <div class="m-title" id="result-title">THÔNG BÁO</div>
+        
+        <div class="m-desc-box" id="result-body" style="text-align: center;">
+            </div>
+
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+            <a href="https://www.facebook.com/duc.thinh.infinity" target="_blank" class="btn-main btn-fb-modal">
+                <i class="fa-brands fa-facebook"></i> Liên Hệ Facebook
+            </a>
+            <a href="https://zalo.me/0827865031" target="_blank" class="btn-main btn-zalo-modal">
+                <i class="fa-solid fa-comment-dots"></i> Liên Hệ Zalo
+            </a>
+            <button class="btn-main btn-close-gray" onclick="hideModal('resultModal')">ĐÓNG</button>
+        </div>
+    </div>
 </div>
+
+<div id="fake-notification" class="fake-order">
+    <img id="fake-img" src="" alt="icon">
+    <div class="fake-info">
+        <div id="fake-user"><b>Nguyễn Văn ***</b></div>
+        <div id="fake-product">Vừa mua <b>AIMPROXY</b></div>
+        <div id="fake-time" style="font-size: 9px; color: #78909c;">1 giây trước</div>
+    </div>
+</div>
+
+<div id="notify-toast"></div>
+
 </body>
 </html>
+
